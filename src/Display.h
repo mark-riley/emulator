@@ -29,6 +29,12 @@
 #define VERTICAL_BLANK_SCAN_LINE 0x90
 #define RETRACE_START 456
 
+#define SCREEN_WIDTH 160
+#define SCREEN_HEIGHT 144
+
+#define BACKGROUND_WIDTH 256
+#define BACKGROUND_HEIGHT 256
+
 class Display {
 public:
     SDL_Window* window;
@@ -52,10 +58,10 @@ private:
     GLuint shaderProgram;
     GLuint lcd_texture;
     GLuint VBO, EBO;
-    uint32_t sys_width;
-    uint32_t sys_height;
+    uint32_t sys_width = SCREEN_WIDTH;
+    uint32_t sys_height = SCREEN_HEIGHT;
     uint8_t scaling_factor;
-    uint8_t screenData[144][160][3];
+    uint8_t screenData[SCREEN_HEIGHT][SCREEN_WIDTH][3];
 
     int retrace_ly;
     int vblankcount;

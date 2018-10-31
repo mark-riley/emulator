@@ -28,9 +28,7 @@ private:
     uint8_t cartridge_ram[0x2000]; // A000H - BFFFH
     uint8_t internal_ram_0[0x1000]; // C000H - CFFFH
     uint8_t internal_ram_x[0x1000]; // D000H - DFFFH
-    uint8_t echo_ram[0x1E00]; // E000H - FDFFH
     uint8_t object_attribute_memory[0xA0]; // FE00H - FE9FH
-    uint8_t unusable_memory[0x60]; // FEA0H - FEFFH
     uint8_t hardware_io[0x80]; // FF00H - FF7FH
     uint8_t zero_page[0x7F]; // FF80H - FFFEH
     uint8_t interrupt_enable_flag[0x1]; // FFFFH - FFFFH

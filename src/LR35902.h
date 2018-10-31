@@ -3,7 +3,6 @@
 #ifndef EMULATOR_Z80_H
 #define EMULATOR_Z80_H
 
-
 #include <cstdint>
 #include "RegisterPair.h"
 #include "MemoryBus.h"

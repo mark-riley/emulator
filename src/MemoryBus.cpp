@@ -33,11 +33,11 @@ uint8_t MemoryBus::read_byte(uint16_t memory_location) {
     } else if (memory_location < ECHO_RAM_OFFSET) {
         return_value = internal_ram_x[memory_location - INTERNAL_RAM_X_OFFSET];
     } else if (memory_location < OBJECT_ATTRIBUTE_MEMORY_OFFSET) { // Echo RAM - Reserved, Do Not Use
-        return_value = echo_ram[memory_location - ECHO_RAM_OFFSET];
+        return_value = read_byte(memory_location - 0x2000);
     } else if (memory_location < UNUSABLE_MEMORY_OFFSET) {
         return_value = object_attribute_memory[memory_location - OBJECT_ATTRIBUTE_MEMORY_OFFSET];
-    } else if (memory_location < HARDWARE_IO_OFFSET) { // Unusable Memory
-        return_value = unusable_memory[memory_location - UNUSABLE_MEMORY_OFFSET];
+    } else if (memory_location < HARDWARE_IO_OFFSET) {
+        // Unusable Memory
     } else if (memory_location < ZERO_PAGE_OFFSET) {
         return_value = hardware_io[memory_location - HARDWARE_IO_OFFSET];
     } else if (memory_location < INTERRUPT_ENABLE_FLAG_OFFSET) {
@@ -70,10 +70,9 @@ void MemoryBus::write_byte(uint16_t memory_location, uint8_t byte) {
     } else if (memory_location < ECHO_RAM_OFFSET) {
         internal_ram_x[memory_location - INTERNAL_RAM_X_OFFSET] = byte;
     } else if (memory_location < OBJECT_ATTRIBUTE_MEMORY_OFFSET) { // Echo RAM - Reserved, Do Not Use
-        echo_ram[memory_location - ECHO_RAM_OFFSET] = byte;
         write_byte(memory_location - 0x2000, byte);
     } else if (memory_location < UNUSABLE_MEMORY_OFFSET) {
-        echo_ram[memory_location - OBJECT_ATTRIBUTE_MEMORY_OFFSET] = byte;
+        object_attribute_memory[memory_location - OBJECT_ATTRIBUTE_MEMORY_OFFSET] = byte;
     } else if (memory_location < HARDWARE_IO_OFFSET) {
         // Unusable Memory - do not write
     } else if (memory_location < ZERO_PAGE_OFFSET) {
@@ -87,6 +86,7 @@ void MemoryBus::write_byte(uint16_t memory_location, uint8_t byte) {
 
         if (memory_location==0xFF46){
             doDMATransfer(byte);
+            return;
         }
 
         hardware_io[memory_location - HARDWARE_IO_OFFSET] = byte;
@@ -99,6 +99,7 @@ void MemoryBus::write_byte(uint16_t memory_location, uint8_t byte) {
 
 void MemoryBus::doDMATransfer(uint8_t byte) {
     uint16_t address = byte << 8;
+
     for (int i = 0; i < 0xA0; i++) {
         write_byte(0xFE00 + i, read_byte(address + i));
     }

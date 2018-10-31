@@ -35,8 +35,6 @@ void main() { \n \
 
 
 void Display::init(LR35902 *cpu, MemoryBus *m) {
-    sys_width = 160;
-    sys_height = 144;
     scaling_factor = 4;
 
     uint32_t screen_width = sys_width * scaling_factor;
@@ -463,24 +461,21 @@ void Display::renderSprites() {
 
                 switch (col) {
                     case 1:
-                        red = 0xCC;
-                        green = 0xCC;
-                        blue = 0xCC;
+                        red = 0x8B;
+                        green = 0xAC;
+                        blue = 0x0F;
                         break;
                     case 2:
-                        red = 0x77;
-                        green = 0x77;
-                        blue = 0x77;
+                        red = 0x30;
+                        green = 0x62;
+                        blue = 0x30;
                         break;
                     case 3:
-                        red = 0;
-                        green = 0;
-                        blue = 0;
+                        red = 0x0F;
+                        green = 0x38;
+                        blue = 0x0F;
                         break;
                     default:
-                        red = 255;
-                        green = 255;
-                        blue = 255;
                         break;
                 }
 
