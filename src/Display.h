@@ -6,7 +6,8 @@
 #include <cstdint>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
-#include "LR35902.h"
+#include "MemoryBus.h"
+#include "Interrupt.h"
 
 #define LCDC_REGISTER 0xFF40
 #define STAT_REGISTER 0xFF41
@@ -27,22 +28,23 @@
 #define WX_REGISTER 0xFF4B
 
 #define VERTICAL_BLANK_SCAN_LINE 0x90
-#define RETRACE_START 456
+#define CLOCKS_PER_LINE 456
 
 #define SCREEN_WIDTH 160
 #define SCREEN_HEIGHT 144
 
-#define BACKGROUND_WIDTH 256
-#define BACKGROUND_HEIGHT 256
-
 class Display {
 public:
-    SDL_Window* window;
-    SDL_GLContext glcontext;
-
-    void init(LR35902*, MemoryBus*);
-    void renderScreen();
+    explicit Display(MemoryBus*, Interrupt*);
     void UpdateGraphics(int);
+    uint8_t*** getScreenData();
+
+    enum {
+        WHITE,
+        LIGHT_GREY,
+        DARK_GREY,
+        BLACK
+    };
 
 private:
     enum {
@@ -52,20 +54,12 @@ private:
         TRANSFER
     };
 
-    LR35902 * c;
     MemoryBus * memory;
-    GLuint VAO;
-    GLuint shaderProgram;
-    GLuint lcd_texture;
-    GLuint VBO, EBO;
-    uint32_t sys_width = SCREEN_WIDTH;
-    uint32_t sys_height = SCREEN_HEIGHT;
-    uint8_t scaling_factor;
+    Interrupt * interrupt;
+
     uint8_t screenData[SCREEN_HEIGHT][SCREEN_WIDTH][3];
 
     int retrace_ly;
-    int vblankcount;
-    int hack;
 
     // LCDC_REGISTER
     bool isLCDEnabled();
@@ -98,7 +92,8 @@ private:
     void setOAMInterrupt(bool);
     void setVBlankInterrupt(bool);
     void setHBlankInterrupt(bool);
-    void setCoincidenceFlag(bool);
+    void setCoincidenceFlag();
+    void resetCoincidenceFlag();
     void setMode(int); // Should be read only
 
     uint8_t getSCY();

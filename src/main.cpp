@@ -1,15 +1,22 @@
 #include <cstdio>
 #include "LR35902.h"
 #include "Display.h"
+#include "Cartridge.h"
+#include "Render.h"
+#include "Timer.h"
+#include "Interrupt.h"
 
 #define BOOT_ROM "dmg_boot.bin"
-#define GAME_ROM "Dr. Mario (World) (Rev A).gb"
+//#define GAME_ROM "Dr. Mario (World) (Rev A).gb"
 //#define GAME_ROM "Pokemon - Blue Version (USA, Europe) (SGB Enhanced).gb"
+//#define GAME_ROM "Legend of Zelda, The - Link's Awakening (U) (V1.2) [!].gb"
+//#define GAME_ROM "Legend of Zelda, The - Link's Awakening DX (U) (V1.2) [C][!].gbc"
 //#define GAME_ROM "Tetris (World).gb"
 //#define GAME_ROM "Alleyway (World).gb"
 //#define GAME_ROM "Super Mario Land (World) (Rev A).gb"
 //#define GAME_ROM "dmg_test_prog_ver1.gb"
-//#define GAME_ROM "sprite_priority.gb"
+#define GAME_ROM "sprite_priority.gb"
+//#define GAME_ROM "dycptest2.gb"
 //#define GAME_ROM "add_sp_e_timing.gb"
 //#define GAME_ROM "instr_timing.gb"
 //#define GAME_ROM "interrupt_time.gb"
@@ -28,6 +35,11 @@
 //#define GAME_ROM "09-op r,r.gb"
 //#define GAME_ROM "10-bit ops.gb"
 //#define GAME_ROM "11-op a,(hl).gb"
+//#define GAME_ROM "bgbtest.gb"
+//#define GAME_ROM "opus5.gb"
+//#define GAME_ROM "lyc.gb"
+//#define GAME_ROM "naughtyemu.gb"
+//#define GAME_ROM "ie_push.gb"
 
 size_t getFileSize(FILE *file) {
     long lCurPos, lEndPos;
@@ -68,32 +80,43 @@ int main (int argv, char** args) {
     const char * rompath = GAME_ROM;
     uint8_t *romBuf = readFileToBuffer(rompath);
 
-    auto *memory_bus = new MemoryBus;
-    memory_bus->init();
+    auto cartridge = new Cartridge(romBuf);
+    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Cartridge Type: %X\n", cartridge->cartridgeType());
+    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "ROM Size: %d\n", cartridge->romSize());
+    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "RAM Size: %llu\n", cartridge->ramSize());
+
+    auto * interrupt = new Interrupt();
+
+    auto * timer = new Timer(interrupt);
+
+    auto *memory_bus = new MemoryBus(cartridge, timer, interrupt);
     memory_bus->load_boot_rom(fileBuf);
-    memory_bus->load_game_rom(romBuf);
 
-    auto *cpu = new LR35902;
-    cpu->init(memory_bus);
+    auto *cpu = new LR35902(memory_bus, interrupt);
 
-    auto *lcd = new Display;
-    lcd->init(cpu, memory_bus);
+    auto *lcd = new Display(memory_bus, interrupt);
 
-//    const int MAX_CYCLES = 70224;
-    const int MAX_CYCLES = 69905;
+    auto *render = new Render(lcd);
+    render->init(cartridge->title());
 
+//    4194304  // clock cycles per second
+//    59.73 hz - refresh rate
+//    1 / 59.73 = 0.016742
+//    4194304 * 0.16742 = 70221
+    const int MAX_CYCLES = 70224;
+//5016
     while (running) {
         int cyclesThisUpdate = 0;
         while(cyclesThisUpdate <= MAX_CYCLES) {
             // start
-            int cycles = cpu->execute_cycle();
+            int cycles = cpu->check_interrupts();
+            cycles += cpu->execute_cycle();
             cyclesThisUpdate += cycles;
-            cpu->do_timers(cycles);
             lcd->UpdateGraphics(cycles);
-            cpu->do_interrupts();
+            timer->do_timers(cycles);
         }
 
-        lcd->renderScreen();
+        render->renderScreen();
 
         while(SDL_PollEvent(&e)) {
             if (e.type == SDL_QUIT) {

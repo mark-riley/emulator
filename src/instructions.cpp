@@ -1,12 +1,16 @@
+#include <SDL2/SDL.h>
 #include "LR35902.h"
 
 int LR35902::execute_cycle() {
+//    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "PC: %04X\n", PC);
+
     int cycles = 0;
     if (halt) {
         cycles += 4;
         return cycles;
     }
     uint8_t current_opcode = fetch_byte();
+//    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "opcode: %02X\n", current_opcode);
 
     if (current_opcode == 0x76) {
         cycles += 4;
@@ -1107,12 +1111,12 @@ void LR35902::SCF() {
 }
 
 void LR35902::HALT() {
-    uint8_t interrupt_request_flag = memory->read_byte(0xFF0F);
-    uint8_t interrupt_enable_flag = memory->read_byte(0xFFFF);
+    uint8_t interrupt_request_flag = interrupt->getIE();
+    uint8_t interrupt_enable_flag = interrupt->getIF();
     uint8_t interrupt_flag = interrupt_request_flag & interrupt_enable_flag;
-    if (IME || interrupt_flag)
+    if (interrupt->getIME() || interrupt_flag)
         halt = true;
-    if (!IME && !interrupt_flag)
+    if (!interrupt->getIME() && !interrupt_flag)
         halt = true;
 }
 
@@ -1121,11 +1125,11 @@ void LR35902::STOP() {
 }
 
 void LR35902::DI() {
-    IME = false;
+    interrupt->disableInterrupts();
 }
 
 void LR35902::EI() {
-    IME = true;
+    interrupt->startInterrupts();
 }
 
 // Rotates and Shifts
@@ -1368,8 +1372,7 @@ void LR35902::RET_C() {
 
 void LR35902::RETI() {
     PC = POP();
-    IME = true;
-
+    interrupt->startInterrupts();
 }
 
 

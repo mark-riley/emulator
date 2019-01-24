@@ -2,41 +2,24 @@
 #include <SDL2/SDL_log.h>
 #include "LR35902.h"
 
-LR35902::LR35902() {
+LR35902::LR35902(MemoryBus * memory_bus, Interrupt * i) {
     PC = 0;
-    m_DividerVariable = 0;
-    m_TimerVariable = 0;
-}
-
-void LR35902::init(MemoryBus *memory_bus) {
     memory = memory_bus;
+    interrupt = i;
     halt = false;
 }
 
-void LR35902::request_interrupt(int interrupt) {
-    uint8_t interrupt_flag = memory->read_byte(0xFF0F);
-    interrupt_flag = set_bit(interrupt_flag, interrupt);
-    memory->write_byte(0xFF0F, interrupt_flag);
-}
-
-void LR35902::do_interrupts() {
-    uint8_t interrupt_request_flag = memory->read_byte(0xFF0F);
-    uint8_t interrupt_enable_flag = memory->read_byte(0xFFFF);
-    uint8_t interrupt_flag = interrupt_request_flag & interrupt_enable_flag;
-    if (interrupt_request_flag)
+int LR35902::check_interrupts() {
+    if (interrupt->getIF())
         halt = false;
 
-    if (IME) {
-        for (int i = 0; i < 5; i++) {
-            if (test_bit(interrupt_flag, i)) {
-                interrupt_request_flag = reset_bit(interrupt_request_flag, i);
-                IME = false;
-                PUSH(PC);
-                PC = 0x0040 + (i * 8);
-                memory->write_byte(0xFF0F, interrupt_request_flag);
-            }
-        }
+    uint16_t is_interrupt = interrupt->do_interrupts();
+    if (is_interrupt) {
+        PUSH(PC);
+        PC = is_interrupt;
+        return 36;
     }
+    return 0;
 }
 
 void LR35902::set_A(uint8_t value) {
@@ -258,76 +241,16 @@ uint16_t LR35902::fetch_word() {
     return memory->read_byte(PC++) | (memory->read_byte(PC++) << 8);
 }
 
-/**
- * FF04 is incremented at a rate of 16384 hz. writing any value resets it to 0.
- *
- * FF05 is incremented at the rate defined by FF07. When it overflows, it gets reset the the value of FF06 and calls an interrupt ( bit 2 in FF0F, 50)
- *
- * FF06 Nothing special
- *
- * FF07 As mentioned, it defines how fast ff05 increments
- *
- * bit 2 defines if the timers even run (0 = stop, 1= start)
- * bit
- * cycles
- */
-void LR35902::do_timers(int cycles) {
-    m_DividerVariable += cycles;
-
-    if (m_DividerVariable > 256) {
-        m_DividerVariable -= 256;
-        memory->increment_DIV();
-    }
-
-    uint8_t TAC = memory->read_byte(0xFF07);
-
-    if (test_bit(TAC, 2)) {
-        m_TimerVariable -= cycles;
-
-        if (m_TimerVariable <= 0) {
-            switch (TAC & 0x3) {
-                case 0:
-                    m_TimerVariable = 1024;  // freq 4096
-                    break;
-                case 1:
-                    m_TimerVariable = 16;  // freq 262144
-                    break;
-                case 2:
-                    m_TimerVariable = 64;  // freq 65536
-                    break;
-                case 3:
-                    m_TimerVariable = 256;  // freq 16382
-                    break;
-                default:
-                    break;
-            }
-
-            uint8_t TIMA = memory->read_byte(0xFF05);
-            if (TIMA == 255) {
-                TIMA = memory->read_byte(0xFF06);
-                request_interrupt(2);
-            } else {
-                ++TIMA;
-            }
-            memory->write_byte(0xFF05, TIMA);
-        }
-    }
-}
-
 uint16_t LR35902::get_ss_value(int ss) {
     switch (ss) {
         case 0:
             return get_BC();
-            break;
         case 1:
             return get_DE();
-            break;
         case 2:
             return get_HL();
-            break;
         case 3:
             return get_SP();
-            break;
         default:
             return 0x00;
     }

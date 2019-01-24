@@ -6,6 +6,7 @@
 #include <cstdint>
 #include "RegisterPair.h"
 #include "MemoryBus.h"
+#include "Interrupt.h"
 
 class LR35902 {
 public:
@@ -13,8 +14,6 @@ public:
 
     uint16_t PC;
     uint16_t SP;
-
-    int cycles;
 
     // Utility methods
     uint8_t get_A();
@@ -213,17 +212,10 @@ public:
     void RETI();
 
     MemoryBus * memory;
-    bool IME;
+    Interrupt * interrupt;
     bool halt;
 
-    int m_DividerVariable;
-    int m_TimerVariable;
-
-    LR35902();
-    void init(MemoryBus*);
-    void do_interrupts();
-    void request_interrupt(int);
-    void do_timers(int);
+    explicit LR35902(MemoryBus *, Interrupt *);
     int execute_cycle();
     int cb_instruction();
     uint8_t fetch_byte();
@@ -236,7 +228,8 @@ public:
     bool get_half_carry(uint8_t, uint8_t);
     bool get_borrow(uint8_t, uint8_t);
     bool get_half_borrow(uint8_t, uint8_t);
-};
 
+    int check_interrupts();
+};
 
 #endif //EMULATOR_Z80_H
