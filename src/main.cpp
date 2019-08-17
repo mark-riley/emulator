@@ -7,7 +7,7 @@
 #include "Interrupt.h"
 
 #define BOOT_ROM "dmg_boot.bin"
-//#define GAME_ROM "Dr. Mario (World) (Rev A).gb"
+#define GAME_ROM "Dr. Mario (World) (Rev A).gb"
 //#define GAME_ROM "Pokemon - Blue Version (USA, Europe) (SGB Enhanced).gb"
 //#define GAME_ROM "Legend of Zelda, The - Link's Awakening (U) (V1.2) [!].gb"
 //#define GAME_ROM "Legend of Zelda, The - Link's Awakening DX (U) (V1.2) [C][!].gbc"
@@ -15,7 +15,7 @@
 //#define GAME_ROM "Alleyway (World).gb"
 //#define GAME_ROM "Super Mario Land (World) (Rev A).gb"
 //#define GAME_ROM "dmg_test_prog_ver1.gb"
-#define GAME_ROM "sprite_priority.gb"
+//#define GAME_ROM "sprite_priority.gb"
 //#define GAME_ROM "dycptest2.gb"
 //#define GAME_ROM "add_sp_e_timing.gb"
 //#define GAME_ROM "instr_timing.gb"
