@@ -2,21 +2,6 @@
 #include <Cartridge.h>
 #include "catch.hpp"
 
-SCENARIO("Loading a ROM", "[cartridge]") {
-    GIVEN("I read a ROM file") {
-        std::string filename = "../tests/res/dummy_rom_only.gb";
-        std::vector<uint8_t> fileBuf = readFileToBuffer(filename);
-        WHEN("I create a new Cartridge object with the vector contents") {
-            auto cart = new  Cartridge(fileBuf);
-            THEN("A byte Vector gets populated"){
-                std::vector<uint8_t> vec = cart->get_rom();
-                std::string test_string = std::string( fileBuf.begin(), fileBuf.begin() + 12 );
-                REQUIRE(test_string == "some content");
-            }
-        }
-    }
-}
-
 SCENARIO("Reading a ROM", "[cartridge]") {
     GIVEN("I have loaded a ROM file") {
         std::string filename = "../tests/res/dummy_rom_only.gb";

@@ -11,7 +11,6 @@ class Cartridge {
 public:
     explicit Cartridge(std::vector<uint8_t>&);
 
-    std::vector<uint8_t> get_rom();  // this is temporary until we can implicitly test the rom contents
     uint8_t peek(int);
     uint16_t peek16(int);
 

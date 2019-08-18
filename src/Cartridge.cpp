@@ -4,10 +4,6 @@ Cartridge::Cartridge(std::vector<uint8_t>& game_rom_buffer) {
     rom = game_rom_buffer;
 }
 
-std::vector<uint8_t> Cartridge::get_rom() {
-    return rom;
-}
-
 std::string Cartridge::getTitle() {
     std::string title = std::string(rom.begin() + 0x0134, rom.begin() + 0x0144);
     return title;
