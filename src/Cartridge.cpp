@@ -20,7 +20,7 @@ uint8_t Cartridge::getHeaderChecksum() {
 uint8_t Cartridge::generateHeaderChecksum() {
     uint8_t headerChecksum = 0;
     for (int i = 0x134; i <= 0x14C; i ++) {
-        headerChecksum -= peek(i) - 1;
+        headerChecksum = headerChecksum - peek(i) - 1;
     }
     return headerChecksum;
 }
