@@ -10,8 +10,8 @@ set(TEST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tests")
 set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 
-set(SOURCES ${SRC_DIR}/main.cpp ${SRC_DIR}/LR35902.cpp ${SRC_DIR}/Display.cpp ${SRC_DIR}/MemoryBus.cpp ${SRC_DIR}/cb_instructions.cpp ${SRC_DIR}/instructions.cpp ${SRC_DIR}/Cartridge.cpp ${SRC_DIR}/Render.cpp ${SRC_DIR}/Timer.cpp ${SRC_DIR}/Interrupt.cpp)
-set(TEST_SOURCES ${TEST_DIR}/tests-main.cpp ${TEST_DIR}/tests-suite.cpp)
+set(SOURCES ${SRC_DIR}/main.cpp ${SRC_DIR}/LR35902.cpp ${SRC_DIR}/Display.cpp ${SRC_DIR}/MemoryBus.cpp ${SRC_DIR}/cb_instructions.cpp ${SRC_DIR}/instructions.cpp ${SRC_DIR}/Cartridge.cpp ${SRC_DIR}/Render.cpp ${SRC_DIR}/Timer.cpp ${SRC_DIR}/Interrupt.cpp src/file-utils.h src/file-utils.cpp)
+set(TEST_SOURCES ${TEST_DIR}/tests-main.cpp ${TEST_DIR}/tests-files.cpp ${TEST_DIR}/tests-cartridge.cpp ${SRC_DIR}/file-utils.h ${SRC_DIR}/file-utils.cpp ${SRC_DIR}/Cartridge.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIR})
