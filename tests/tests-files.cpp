@@ -7,8 +7,8 @@ SCENARIO("Reading a file", "[file]") {
         WHEN("I pass it to the file reader") {
             std::vector<uint8_t> fileBuf = readFileToBuffer(filename);
             THEN("I get a vector file buffer containing my file contents") {
-                std::string test_string = std::string( fileBuf.begin(), fileBuf.end() );
-                REQUIRE(test_string == "some contents");
+                std::string test_string = std::string( fileBuf.begin(), fileBuf.begin() + 12 );
+                REQUIRE(test_string == "some content");
             }
         }
     }
