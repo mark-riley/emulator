@@ -13,6 +13,18 @@ std::string Cartridge::getTitle() {
     return title;
 }
 
+uint8_t Cartridge::getHeaderChecksum() {
+    return peek(0x14d);
+}
+
+uint8_t Cartridge::generateHeaderChecksum() {
+    uint8_t headerChecksum = 0;
+    for (int i = 0x134; i <= 0x14C; i ++) {
+        headerChecksum -= peek(i) - 1;
+    }
+    return headerChecksum;
+}
+
 uint8_t Cartridge::peek(int memory_location) {
     return rom[memory_location];
 }

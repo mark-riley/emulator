@@ -16,6 +16,8 @@ public:
     uint16_t peek16(int);
 
     std::string getTitle();
+    uint8_t getHeaderChecksum();
+    uint8_t generateHeaderChecksum();
 private:
     std::vector<uint8_t> rom;
 };

@@ -67,5 +67,17 @@ SCENARIO("Cartridge metadata", "[cartridge]") {
                 REQUIRE(title.c_str() == control_string);
             }
         }
+        WHEN("I generate the ROM's header checksum") {
+            uint8_t headerChecksum = cart->getHeaderChecksum();
+            THEN("The checksum should be equal to 5CH"){
+                REQUIRE(headerChecksum == 0x5c);
+            }
+        }
+        WHEN("I generate the ROM's header checksum") {
+            uint8_t headerChecksum = cart->generateHeaderChecksum();
+            THEN("The checksum should be equal to 5CH"){
+                REQUIRE(headerChecksum == 0x5c);
+            }
+        }
     }
 }
