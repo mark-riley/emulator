@@ -3,7 +3,7 @@
 
 SCENARIO("Reading a file", "[file]") {
     GIVEN("I have a path to a file") {
-        std::string filename = "../tests/res/test-files-reading.txt";
+        std::string filename = "../tests/res/dummy_rom_mbc0.gb";
         WHEN("I pass it to the file reader") {
             std::vector<uint8_t> fileBuf = readFileToBuffer(filename);
             THEN("I get a vector file buffer containing my file contents") {
