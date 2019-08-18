@@ -25,6 +25,18 @@ uint8_t Cartridge::generateHeaderChecksum() {
     return headerChecksum;
 }
 
+uint8_t Cartridge::getCartridgeType() {
+    return peek(0x147);
+}
+
+uint8_t Cartridge::getRomBanks() {
+    return peek(0x148);
+}
+
+uint8_t Cartridge::getRamBanks() {
+    return peek(0x149);
+}
+
 uint8_t Cartridge::peek(int memory_location) {
     return rom[memory_location];
 }

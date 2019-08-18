@@ -67,7 +67,7 @@ SCENARIO("Cartridge metadata", "[cartridge]") {
                 REQUIRE(title.c_str() == control_string);
             }
         }
-        WHEN("I generate the ROM's header checksum") {
+        WHEN("I read the ROM's header checksum") {
             uint8_t headerChecksum = cart->getHeaderChecksum();
             THEN("The checksum should be equal to 5CH"){
                 REQUIRE(headerChecksum == 0x5c);
@@ -77,6 +77,24 @@ SCENARIO("Cartridge metadata", "[cartridge]") {
             uint8_t headerChecksum = cart->generateHeaderChecksum();
             THEN("The checksum should be equal to 5CH"){
                 REQUIRE(headerChecksum == 0x5c);
+            }
+        }
+        WHEN("I read the ROM's type") {
+            uint8_t cartridgeType = cart->getCartridgeType();
+            THEN("The type should be ROM_ONLY"){
+                REQUIRE(cartridgeType == cart->ROM_ONLY);
+            }
+        }
+        WHEN("I read the ROM's size") {
+            uint8_t romSize = cart->getRomBanks();
+            THEN("The size should be NONE"){
+                REQUIRE(romSize == cart->NONE);
+            }
+        }
+        WHEN("I read the ROM's RAM size") {
+            uint8_t ramSize = cart->getRamBanks();
+            THEN("The size should be NO_RAM"){
+                REQUIRE(ramSize == cart->NO_RAM);
             }
         }
     }
