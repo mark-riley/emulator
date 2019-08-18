@@ -69,14 +69,14 @@ SCENARIO("Cartridge metadata", "[cartridge]") {
         }
         WHEN("I read the ROM's header checksum") {
             uint8_t headerChecksum = cart->getHeaderChecksum();
-            THEN("The checksum should be equal to 5CH"){
-                REQUIRE(headerChecksum == 0x92);
+            THEN("The checksum should be equal to 2AH"){
+                REQUIRE(headerChecksum == 0x2a);
             }
         }
         WHEN("I generate the ROM's header checksum") {
             uint8_t headerChecksum = cart->generateHeaderChecksum();
-            THEN("The checksum should be equal to 5CH"){
-                REQUIRE(headerChecksum == 0x92);
+            THEN("The checksum should be equal to 2AH"){
+                REQUIRE(headerChecksum == 0x2a);
             }
         }
         WHEN("I read the ROM's type") {
