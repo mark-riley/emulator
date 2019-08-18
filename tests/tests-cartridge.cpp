@@ -4,7 +4,7 @@
 
 SCENARIO("Loading a ROM", "[cartridge]") {
     GIVEN("I read a ROM file") {
-        std::string filename = "../tests/res/dummy_rom_mbc0.gb";
+        std::string filename = "../tests/res/dummy_rom_only.gb";
         std::vector<uint8_t> fileBuf = readFileToBuffer(filename);
         WHEN("I create a new Cartridge object with the vector contents") {
             auto cart = new  Cartridge(fileBuf);
@@ -19,7 +19,7 @@ SCENARIO("Loading a ROM", "[cartridge]") {
 
 SCENARIO("Reading a ROM", "[cartridge]") {
     GIVEN("I have loaded a ROM file") {
-        std::string filename = "../tests/res/dummy_rom_mbc0.gb";
+        std::string filename = "../tests/res/dummy_rom_only.gb";
         std::vector<uint8_t> fileBuf = readFileToBuffer(filename);
         auto cart = new  Cartridge(fileBuf);
         WHEN("I read the first byte") {
@@ -53,7 +53,7 @@ SCENARIO("Reading a ROM", "[cartridge]") {
 
 SCENARIO("Cartridge metadata", "[cartridge]") {
     GIVEN("I have loaded a ROM file") {
-        std::string filename = "../tests/res/dummy_rom_mbc0.gb";
+        std::string filename = "../tests/res/dummy_rom_only.gb";
         std::vector<uint8_t> fileBuf = readFileToBuffer(filename);
         auto cart = new  Cartridge(fileBuf);
         WHEN("I read the ROM's title") {
