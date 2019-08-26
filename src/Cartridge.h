@@ -11,9 +11,14 @@ class Cartridge {
 public:
     explicit Cartridge(std::vector<uint8_t>&);
 
+    // Read data
     uint8_t peek(int);
     uint16_t peek16(int);
 
+    // 'Write' data
+    void poke(int, uint8_t);
+
+    // Cartridge metadata
     std::string getTitle();
     uint8_t getHeaderChecksum();
     uint8_t generateHeaderChecksum();
@@ -87,6 +92,10 @@ public:
     };
 private:
     std::vector<uint8_t> rom;
+    std::vector<uint8_t> ram;
+    bool ramEnable;
+    int romBank;
+    int ramBank;
 };
 
 #endif //EMULATOR_CARTRIDGE_H
