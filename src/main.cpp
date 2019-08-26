@@ -1,10 +1,10 @@
-#include <cstdio>
 #include "LR35902.h"
 #include "Display.h"
 #include "Cartridge.h"
 #include "Render.h"
 #include "Timer.h"
 #include "Interrupt.h"
+#include "file-utils.h"
 
 #define BOOT_ROM "dmg_boot.bin"
 #define GAME_ROM "Dr. Mario (World) (Rev A).gb"
@@ -41,49 +41,21 @@
 //#define GAME_ROM "naughtyemu.gb"
 //#define GAME_ROM "ie_push.gb"
 
-size_t getFileSize(FILE *file) {
-    long lCurPos, lEndPos;
-    lCurPos = ftell(file);
-    fseek(file, 0, 2);
-    lEndPos = ftell(file);
-    fseek(file, lCurPos, 0);
-    return (size_t)lEndPos;
-}
-
-uint8_t * readFileToBuffer(const char * filePath) {
-    uint8_t *fileBuf;
-    FILE *file = nullptr;
-
-    if ((file = fopen(filePath, "rb")) == nullptr) {
-        SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Could not open specified file\n");
-    }
-
-    size_t fileSize = getFileSize(file);
-
-    fileBuf = new uint8_t[fileSize];
-
-    fread(fileBuf, fileSize, 1, file);
-    fclose(file);
-
-    return fileBuf;
-}
-
-
 int main (int argv, char** args) {
     int running = true;
     SDL_Event e;
 
     // Loading the boot rom
     const char * filePath = BOOT_ROM;
-    uint8_t *fileBuf = readFileToBuffer(filePath);
+    std::vector<uint8_t> fileBuf = readFileToBuffer(filePath);
 
     const char * rompath = GAME_ROM;
-    uint8_t *romBuf = readFileToBuffer(rompath);
+    std::vector<uint8_t> romBuf = readFileToBuffer(rompath);
 
     auto cartridge = new Cartridge(romBuf);
-    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Cartridge Type: %X\n", cartridge->cartridgeType());
-    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "ROM Size: %d\n", cartridge->romSize());
-    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "RAM Size: %llu\n", cartridge->ramSize());
+    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Cartridge Type: %X\n", cartridge->getCartridgeType());
+    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "ROM Size: %d\n", cartridge->getRomBanks());
+    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "RAM Size: %d\n", cartridge->getRamBanks());
 
     auto * interrupt = new Interrupt();
 
@@ -97,7 +69,7 @@ int main (int argv, char** args) {
     auto *lcd = new Display(memory_bus, interrupt);
 
     auto *render = new Render(lcd);
-    render->init(cartridge->title());
+    render->init(cartridge->getTitle());
 
 //    4194304  // clock cycles per second
 //    59.73 hz - refresh rate

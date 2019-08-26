@@ -145,8 +145,8 @@ void MemoryBus::doDMATransfer(uint8_t byte) {
     }
 }
 
-void MemoryBus::load_boot_rom(uint8_t *boot_rom_buffer) {
-    memcpy(&boot_rom, boot_rom_buffer, 0x100);
+void MemoryBus::load_boot_rom(std::vector<uint8_t> boot_rom_buffer) {
+    boot_rom = boot_rom_buffer;
 }
 
 void MemoryBus::increment_LY() {

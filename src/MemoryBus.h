@@ -24,7 +24,7 @@
 class MemoryBus {
 public:
     explicit MemoryBus(Cartridge *, Timer *, Interrupt *);
-    void load_boot_rom(uint8_t *);
+    void load_boot_rom(std::vector<uint8_t>);
     uint8_t read_byte(uint16_t);
     uint16_t read_word(uint16_t);
     void write_word(uint16_t, uint16_t);
@@ -34,7 +34,7 @@ public:
     void increment_LY();
     void reset_LY();
 private:
-    uint8_t boot_rom[0x100]; // 0000H - 00FFH
+    std::vector<uint8_t> boot_rom; // 0000H - 00FFH
     uint8_t vram[0x2000]; // 8000H - 9FFFH
     uint8_t internal_ram_0[0x1000]; // C000H - CFFFH
     uint8_t internal_ram_x[0x1000]; // D000H - DFFFH
