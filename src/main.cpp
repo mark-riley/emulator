@@ -7,7 +7,7 @@
 #include "file-utils.h"
 
 #define BOOT_ROM "dmg_boot.bin"
-#define GAME_ROM "Dr. Mario (World) (Rev A).gb"
+// #define GAME_ROM "Dr. Mario (World) (Rev A).gb"
 //#define GAME_ROM "Pokemon - Blue Version (USA, Europe) (SGB Enhanced).gb"
 //#define GAME_ROM "Legend of Zelda, The - Link's Awakening (U) (V1.2) [!].gb"
 //#define GAME_ROM "Legend of Zelda, The - Link's Awakening DX (U) (V1.2) [C][!].gbc"
@@ -23,7 +23,7 @@
 //#define GAME_ROM "01-read_timing.gb"
 //#define GAME_ROM "02-write_timing.gb"
 //#define GAME_ROM "03-modify_timing.gb"
-//#define GAME_ROM "cpu_instrs.gb"
+#define GAME_ROM "cpu_instrs.gb"
 //#define GAME_ROM "01-special.gb"
 //#define GAME_ROM "02-interrupts.gb"
 //#define GAME_ROM "03-op sp,hl.gb"
@@ -64,7 +64,7 @@ int main (int argv, char** args) {
     auto *memory_bus = new MemoryBus(cartridge, timer, interrupt);
     memory_bus->load_boot_rom(fileBuf);
 
-    auto *cpu = new LR35902(memory_bus, interrupt);
+    auto *cpu = new LR35902(memory_bus, interrupt, true);
 
     auto *lcd = new Display(memory_bus, interrupt);
 

@@ -2,8 +2,18 @@
 #include <SDL2/SDL_log.h>
 #include "LR35902.h"
 
-LR35902::LR35902(MemoryBus * memory_bus, Interrupt * i) {
-    PC = 0;
+LR35902::LR35902(MemoryBus * memory_bus, Interrupt * i, bool skip_bios) {
+    if (skip_bios) {
+        PC = 0x0100;
+        set_AF(0x11B0);
+        set_BC(0x0013);
+        set_DE(0x00D8);
+        set_HL(0x014D);
+        set_SP(0xFFFE);
+        memory_bus->write_byte(0xFF50, 0x1);
+    } else {
+        PC = 0;
+    }
     memory = memory_bus;
     interrupt = i;
     halt = false;

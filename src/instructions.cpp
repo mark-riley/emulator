@@ -1,8 +1,10 @@
 #include <SDL2/SDL.h>
 #include "LR35902.h"
+#include <cstdio>
 
 int LR35902::execute_cycle() {
-//    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "PC: %04X\n", PC);
+    // SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "AF: %04X BC: %04X DE: %04X HL: %04X SP: %04X PC: %04X\n", AF, BC, DE, HL, SP, PC);
+    printf("AF: %04X BC: %04X DE: %04X HL: %04X SP: %04X PC: %04X\n", AF, BC, DE, HL, SP, PC);
 
     int cycles = 0;
     if (halt) {
@@ -11,6 +13,7 @@ int LR35902::execute_cycle() {
     }
     uint8_t current_opcode = fetch_byte();
 //    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "opcode: %02X\n", current_opcode);
+    printf("opcode: %02X\n", current_opcode);
 
     if (current_opcode == 0x76) {
         cycles += 4;
