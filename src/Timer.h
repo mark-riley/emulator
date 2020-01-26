@@ -9,7 +9,7 @@
 class Timer {
 public:
     explicit Timer(Interrupt *);
-    void do_timers(int);
+    void doTimers(int);
     uint8_t getDIV();
     uint8_t getTIMA();
     uint8_t getTMA();
@@ -23,12 +23,11 @@ private:
     bool isClockEnabled();
     uint8_t getClockFreq();
     void setClockFreq();
-    bool test_bit(uint8_t byte, int);
 
     Interrupt * interrupt;
 
-    int m_DividerVariable;
-    int m_TimerVariable;
+    int dividerVariable;
+    int timerVariable;
     int clockFreq;
     uint8_t DIV;
     uint8_t TIMA;

@@ -1,14 +1,18 @@
 #include "Timer.h"
 
-bool Timer::test_bit(uint8_t byte, int bit) {
-    return (byte >> bit) & 1;
+bool testBit(uint8_t byte, int bit) {
+    return byte >> bit & 1;
 }
 
 Timer::Timer(Interrupt * system_interrupt) {
-    m_DividerVariable = 0;
-    m_TimerVariable = 0;
+    dividerVariable = 0;
+    timerVariable = 0;
     clockFreq = 1024;
     interrupt = system_interrupt;
+    DIV = 0;
+    TIMA = 0;
+    TMA = 0;
+    TAC = 0;
 }
 
 /**
@@ -24,20 +28,20 @@ Timer::Timer(Interrupt * system_interrupt) {
  * bit
  * cycles
  */
-void Timer::do_timers(int cycles) {
-    m_DividerVariable += cycles;
+void Timer::doTimers(int cycles) {
+    dividerVariable += cycles;
 
-    if (m_DividerVariable > 0xFF) {
-        m_DividerVariable -= 0x100;
+    if (dividerVariable > 0xFF) {
+        dividerVariable -= 0x100;
         ++DIV;
     }
 
     if (isClockEnabled()) {
-        m_TimerVariable += cycles;
+        timerVariable += cycles;
         setClockFreq();
 
-        if (m_TimerVariable >= clockFreq) {
-            m_TimerVariable -= clockFreq;
+        if (timerVariable >= clockFreq) {
+            timerVariable -= clockFreq;
             ++TIMA;
 
             if (TIMA == 0x00) {
@@ -65,7 +69,7 @@ uint8_t Timer::getTAC() {
 }
 
 bool Timer::isClockEnabled() {
-    return test_bit(TAC, 2);
+    return testBit(TAC, 2);
 }
 
 uint8_t Timer::getClockFreq() {

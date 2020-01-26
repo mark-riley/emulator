@@ -7,7 +7,7 @@
 #include "file-utils.h"
 
 #define BOOT_ROM "dmg_boot.bin"
-#define GAME_ROM "Dr. Mario (World) (Rev A).gb"
+//#define GAME_ROM "Dr. Mario (World) (Rev A).gb"
 //#define GAME_ROM "Pokemon - Blue Version (USA, Europe) (SGB Enhanced).gb"
 //#define GAME_ROM "Legend of Zelda, The - Link's Awakening (U) (V1.2) [!].gb"
 //#define GAME_ROM "Legend of Zelda, The - Link's Awakening DX (U) (V1.2) [C][!].gbc"
@@ -18,7 +18,7 @@
 //#define GAME_ROM "sprite_priority.gb"
 //#define GAME_ROM "dycptest2.gb"
 //#define GAME_ROM "add_sp_e_timing.gb"
-//#define GAME_ROM "instr_timing.gb"
+#define GAME_ROM "instr_timing.gb"
 //#define GAME_ROM "interrupt_time.gb"
 //#define GAME_ROM "01-read_timing.gb"
 //#define GAME_ROM "02-write_timing.gb"
@@ -53,6 +53,7 @@ int main (int argv, char** args) {
     std::vector<uint8_t> romBuf = readFileToBuffer(rompath);
 
     auto cartridge = new Cartridge(romBuf);
+    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Cartridge Title: %s\n", cartridge->getTitle().c_str());
     SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Cartridge Type: %X\n", cartridge->getCartridgeType());
     SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "ROM Size: %d\n", cartridge->getRomBanks());
     SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "RAM Size: %d\n", cartridge->getRamBanks());
@@ -75,7 +76,7 @@ int main (int argv, char** args) {
 //    59.73 hz - refresh rate
 //    1 / 59.73 = 0.016742
 //    4194304 * 0.16742 = 70221
-    const int MAX_CYCLES = 70224;
+    const int MAX_CYCLES = 70221;
 //5016
     while (running) {
         int cyclesThisUpdate = 0;
@@ -85,7 +86,7 @@ int main (int argv, char** args) {
             cycles += cpu->execute_cycle();
             cyclesThisUpdate += cycles;
             lcd->UpdateGraphics(cycles);
-            timer->do_timers(cycles);
+            timer->doTimers(cycles);
         }
 
         render->renderScreen();
