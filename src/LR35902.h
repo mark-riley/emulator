@@ -215,7 +215,7 @@ public:
     Interrupt * interrupt;
     bool halt;
 
-    explicit LR35902(MemoryBus *, Interrupt *);
+    explicit LR35902(MemoryBus *, Interrupt *, bool);
     int execute_cycle();
     int cb_instruction();
     uint8_t fetch_byte();
