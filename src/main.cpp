@@ -18,7 +18,7 @@
 //#define GAME_ROM "sprite_priority.gb"
 //#define GAME_ROM "dycptest2.gb"
 //#define GAME_ROM "add_sp_e_timing.gb"
-#define GAME_ROM "instr_timing.gb"
+//#define GAME_ROM "instr_timing.gb"
 //#define GAME_ROM "interrupt_time.gb"
 //#define GAME_ROM "01-read_timing.gb"
 //#define GAME_ROM "02-write_timing.gb"
@@ -72,11 +72,10 @@ int main (int argv, char** args) {
     auto *render = new Render(lcd);
     render->init(cartridge->getTitle());
 
-//    4194304  // clock cycles per second
+//    4194304  // clock cycles per second (2^22)
 //    59.73 hz - refresh rate
-//    1 / 59.73 = 0.016742
-//    4194304 * 0.16742 = 70221
-    const int MAX_CYCLES = 70221;
+//    4194304 / 59.73 = 70221
+    const int MAX_CYCLES = 70256;
 //5016
     while (running) {
         int cyclesThisUpdate = 0;
