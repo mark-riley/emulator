@@ -3,6 +3,7 @@
 
 Cartridge::Cartridge(std::vector<uint8_t>& game_rom_buffer) {
     rom = game_rom_buffer;
+    ram = std::vector<uint8_t>(0x2000, 0x0);
     romBank = 1;
     ramBank = 0;
     ramEnable = false;

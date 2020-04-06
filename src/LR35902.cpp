@@ -5,7 +5,7 @@
 LR35902::LR35902(MemoryBus * memory_bus, Interrupt * i, bool skip_bios) {
     if (skip_bios) {
         PC = 0x0100;
-        set_AF(0x11B0);
+        set_AF(0x01B0);
         set_BC(0x0013);
         set_DE(0x00D8);
         set_HL(0x014D);
