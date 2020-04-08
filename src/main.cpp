@@ -8,6 +8,7 @@
 
 #define BOOT_ROM "bios/dmg_boot.bin"
 //#define GAME_ROM "blargg/halt_bug.gb" // Fails 3db103c3
+
 //#define GAME_ROM "blargg/cgb_sound/cgb_sound.gb" // Not implemented
 //#define GAME_ROM "blargg/cgb_sound/rom_singles/01-registers.gb" // Not implemented
 //#define GAME_ROM "blargg/cgb_sound/rom_singles/02-len ctr.gb" // Not implemented
@@ -21,6 +22,7 @@
 //#define GAME_ROM "blargg/cgb_sound/rom_singles/10-wave trigger while on.gb" // Not implemented
 //#define GAME_ROM "blargg/cgb_sound/rom_singles/11-regs after power.gb" // Not implemented
 //#define GAME_ROM "blargg/cgb_sound/rom_singles/12-wave.gb" // Not implemented
+
 //#define GAME_ROM "blargg/cpu_instrs/cpu_instrs.gb" // Passes
 //#define GAME_ROM "blargg/cpu_instrs/individual/01-special.gb" // Passes
 //#define GAME_ROM "blargg/cpu_instrs/individual/02-interrupts.gb" // Passes
@@ -33,6 +35,7 @@
 //#define GAME_ROM "blargg/cpu_instrs/individual/09-op r,r.gb" // Passes
 //#define GAME_ROM "blargg/cpu_instrs/individual/10-bit ops.gb" // Passes
 //#define GAME_ROM "blargg/cpu_instrs/individual/11-op a,(hl).gb" // Passes
+
 //#define GAME_ROM "blargg/dmg_sound/dmg_sound.gb" // Not implemented
 //#define GAME_ROM "blargg/dmg_sound/rom_singles/01-registers.gb" // Not implemented
 //#define GAME_ROM "blargg/dmg_sound/rom_singles/02-len ctr.gb" // Not implemented
@@ -46,8 +49,11 @@
 //#define GAME_ROM "blargg/dmg_sound/rom_singles/10-wave trigger while on.gb" // Not implemented
 //#define GAME_ROM "blargg/dmg_sound/rom_singles/11-regs after power.gb" // Not implemented
 //#define GAME_ROM "blargg/dmg_sound/rom_singles/12-wave write while on.gb" // Not implemented
+
 //#define GAME_ROM "blargg/instr_timing/instr_timing.gb" // Fails 255
+
 //#define GAME_ROM "blargg/interrupt_time/interrupt_time.gb" // Fails
+
 //#define GAME_ROM "blargg/mem_timing/mem_timing.gb" // Fails
 //#define GAME_ROM "blargg/mem_timing/individual/01-read_timing.gb" // Fails 30
 //#define GAME_ROM "blargg/mem_timing/individual/02-write_timing.gb" // Fails 15
@@ -56,6 +62,7 @@
 //#define GAME_ROM "blargg/mem_timing-2/rom_singles/01-read_timing.gb" // Fails 30
 //#define GAME_ROM "blargg/mem_timing-2/rom_singles/02-write_timing.gb"// Fails 15
 //#define GAME_ROM "blargg/mem_timing-2/rom_singles/03-modify_timing.gb" // Fails 16+
+
 //#define GAME_ROM "blargg/oam_bug/oam_bug.gb" // Fails
 //#define GAME_ROM "blargg/oam_bug/rom_singles/1-lcd_sync.gb" // Fails (LCD starts too early)
 //#define GAME_ROM "blargg/oam_bug/rom_singles/2-causes.gb" // Fails LD DE $FE00 : INC DE
