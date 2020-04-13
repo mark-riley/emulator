@@ -1,4 +1,4 @@
-#include "LR35902.h"
+#include "cpu/LR35902.h"
 #include "Display.h"
 #include "Cartridge.h"
 #include "Render.h"
