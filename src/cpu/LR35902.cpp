@@ -29,35 +29,249 @@ int LR35902::execute_cycle() {
     uint8_t current_opcode = fetch_byte();
 //    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "opcode: %02X\n", current_opcode);
 
-    if (current_opcode == 0x76) {
-        cycles += 4;
-        HALT();
-        return cycles;
-    }
-
-    if (get_x(current_opcode) == 0x01) {
-        cycles += 4;
-        if (get_z(current_opcode) == 0x6) {
-            cycles += 4;
-        }
-        LD_r_r_(current_opcode);
-        return cycles;
-    }
-
     uint16_t old_pc = PC;
 
     switch (current_opcode) {
+        // 8-bit loads
+        case 0x7F: // ld a, a
+        case 0x78: // ld a, b
+        case 0x79: // ld a, c
+        case 0x7A: // ld a, d
+        case 0x7B: // ld a, e
+        case 0x7C: // ld a, h
+        case 0x7D: // ld a, l
+
+        case 0x47: // ld b, a
+        case 0x40: // ld b, b
+        case 0x41: // ld b, c
+        case 0x42: // ld b, d
+        case 0x43: // ld b, e
+        case 0x44: // ld b, h
+        case 0x45: // ld b, l
+
+        case 0x4F: // ld c, a
+        case 0x48: // ld c, b
+        case 0x49: // ld c, c
+        case 0x4A: // ld c, d
+        case 0x4B: // ld c, e
+        case 0x4C: // ld c, h
+        case 0x4D: // ld c, l
+
+        case 0x57: // ld d, a
+        case 0x50: // ld d, b
+        case 0x51: // ld d, c
+        case 0x52: // ld d, d
+        case 0x53: // ld d, e
+        case 0x54: // ld d, h
+        case 0x55: // ld d, l
+
+        case 0x5F: // ld e, a
+        case 0x58: // ld e, b
+        case 0x59: // ld e, c
+        case 0x5A: // ld e, d
+        case 0x5B: // ld e, e
+        case 0x5C: // ld e, h
+        case 0x5D: // ld e, l
+
+        case 0x67: // ld h, a
+        case 0x60: // ld h, b
+        case 0x61: // ld h, c
+        case 0x62: // ld h, d
+        case 0x63: // ld h, e
+        case 0x64: // ld h, h
+        case 0x65: // ld h, l
+
+        case 0x6F: // ld l, a
+        case 0x68: // ld l, b
+        case 0x69: // ld l, c
+        case 0x6A: // ld l, d
+        case 0x6B: // ld l, e
+        case 0x6C: // ld l, h
+        case 0x6D: // ld l, l
+            cycles = 4;
+            LD_r_r_(current_opcode);
+            break;
+
+        case 0x3E: // ld a, n
+        case 0x06: // ld b, n
+        case 0x0E: // ld c, n
+        case 0x16: // ld d, n
+        case 0x1E: // ld e, n
+        case 0x26: // ld h, n
+        case 0x2E: // ld l, n
+            cycles = 8;
+            LD_r_n(current_opcode);
+            break;
+
+        case 0x7E: // ld a, (hl)
+        case 0x46: // ld b, (hl)
+        case 0x4E: // ld c, (hl)
+        case 0x56: // ld d, (hl)
+        case 0x5E: // ld e, (hl)
+        case 0x66: // ld h, (hl)
+        case 0x6E: // ld l, (hl)
+            cycles = 8;
+            LD_r_r_(current_opcode);
+            break;
+
+        case 0x77: // ld (hl), a
+        case 0x70: // ld (hl), b
+        case 0x71: // ld (hl), c
+        case 0x72: // ld (hl), d
+        case 0x73: // ld (hl), e
+        case 0x74: // ld (hl), h
+        case 0x75: // ld (hl), l
+            cycles = 8;
+            LD_r_r_(current_opcode);
+            break;
+
+        case 0x36: // ld (hl), n
+            cycles = 12;
+            LD_r_n(current_opcode);
+            break;
+
+        case 0x0A: // ld a, (BC)
+            cycles = 8;
+            LD_A__BC_();
+            break;
+
+        case 0x1A: // ld a, (DE)
+            cycles = 8;
+            LD_A__DE_();
+            break;
+
+        case 0xF2: // ld a, (C)
+            cycles = 8;
+            LD_A__C_();
+            break;
+
+        case 0xE2: // ld (C), a
+            cycles = 8;
+            LD__C__A();
+            break;
+
+        case 0xF0: // ld a, (n)
+            cycles = 12;
+            LD_A__n_();
+            break;
+
+        case 0xE0: // ld (n), a
+            cycles = 12;
+            LD__n__A();
+            break;
+
+        case 0xFA: // ld a, (nn)
+            cycles = 16;
+            LD_A__nn_();
+            break;
+
+        case 0xEA: // ld (nn), a
+            cycles = 16;
+            LD__nn__A();
+            break;
+
+        case 0x2A: // ld a, (hli)
+            cycles = 8;
+            LD_A__HLI_();
+            break;
+        case 0x3A: // ld a, (hld)
+            cycles = 8;
+            LD_A__HLD_();
+            break;
+        case 0x02: // ld (bc), a
+            cycles = 8;
+            LD__BC__A();
+            break;
+        case 0x12: // ld (de), a
+            cycles = 8;
+            LD__DE__A();
+            break;
+        case 0x22: // ld (hli), a
+            cycles = 8;
+            LD__HLI__A();
+            break;
+        case 0x32: // ld (hld), a
+            cycles = 8;
+            LD__HLD__A();
+            break;
+
+        // 16-bit loads
+        case 0x01: // ld bc, nn
+            cycles = 12;
+            LD_BC_nn();
+            break;
+        case 0x11: // ld de, nn
+            cycles = 12;
+            LD_DE_nn();
+            break;
+        case 0x21: // ld hl, nn
+            cycles = 12;
+            LD_HL_nn();
+            break;
+        case 0x31: // ld sp, nn
+            cycles = 12;
+            LD_SP_nn();
+            break;
+
+        case 0xF9: // ld sp, hl
+            cycles = 8;
+            LD_SP_HL();
+            break;
+
+        case 0xC5: // push BC
+            cycles = 16;
+            PUSH_BC();
+            break;
+        case 0xD5: // push DE
+            cycles = 16;
+            PUSH_DE();
+            break;
+        case 0xE5: // push HL
+            cycles = 16;
+            PUSH_HL();
+            break;
+        case 0xF5: // push AF
+            cycles = 16;
+            PUSH_AF();
+            break;
+
+        case 0xC1: // pop BC
+            cycles = 12;
+            POP_BC();
+            break;
+        case 0xD1: // pop DE
+            cycles = 12;
+            POP_DE();
+            break;
+        case 0xE1: // pop HL
+            cycles = 12;
+            POP_HL();
+            break;
+        case 0xF1: // pop AF
+            cycles = 12;
+            POP_AF();
+            break;
+
+        case 0xF8: // ldhl sp, e
+            cycles = 12;
+            LDHL_SP_n();
+            break;
+
+        case 0x08: // ldhl sp, e
+            cycles = 20;
+            LD__nn__SP();
+            break;
+
+        case 0x76: // halt
+            cycles = 4;
+            HALT();
+            break;
+
+
+
         case 0x00:
             cycles += 4;
             NOP(current_opcode);
-            break;
-        case 0x01:
-            cycles += 12;
-            LD_BC_nn();
-            break;
-        case 0x02:
-            cycles += 8;
-            LD__BC__A();
             break;
         case 0x03:
             cycles += 8;
@@ -71,25 +285,13 @@ int LR35902::execute_cycle() {
             cycles += 4;
             DEC_r(current_opcode);
             break;
-        case 0x06:
-            cycles += 8;
-            LD_r_n(current_opcode);
-            break;
         case 0x07:
             cycles += 4;
             RLCA();
             break;
-        case 0x08:
-            cycles += 20;
-            LD__nn__SP();
-            break;
         case 0x09:
             cycles += 8;
             ADD_HL_BC();
-            break;
-        case 0x0A:
-            cycles += 8;
-            LD_A__BC_();
             break;
         case 0x0B:
             cycles += 8;
@@ -103,10 +305,6 @@ int LR35902::execute_cycle() {
             cycles += 4;
             DEC_r(current_opcode);
             break;
-        case 0x0E:
-            cycles += 8;
-            LD_r_n(current_opcode);
-            break;
         case 0x0F:
             cycles += 4;
             RRCA();
@@ -115,14 +313,6 @@ int LR35902::execute_cycle() {
         case 0x10:
             cycles += 4;
             STOP();
-            break;
-        case 0x11:
-            cycles += 12;
-            LD_DE_nn();
-            break;
-        case 0x12:
-            cycles += 8;
-            LD__DE__A();
             break;
         case 0x13:
             cycles += 8;
@@ -136,10 +326,6 @@ int LR35902::execute_cycle() {
             cycles += 4;
             DEC_r(current_opcode);
             break;
-        case 0x16:
-            cycles += 8;
-            LD_r_n(current_opcode);
-            break;
         case 0x17:
             cycles += 4;
             RLA();
@@ -151,10 +337,6 @@ int LR35902::execute_cycle() {
         case 0x19:
             cycles += 8;
             ADD_HL_DE();
-            break;
-        case 0x1A:
-            cycles += 8;
-            LD_A__DE_();
             break;
         case 0x1B:
             cycles += 8;
@@ -168,10 +350,6 @@ int LR35902::execute_cycle() {
             cycles += 4;
             DEC_r(current_opcode);
             break;
-        case 0x1E:
-            cycles += 8;
-            LD_r_n(current_opcode);
-            break;
         case 0x1F:
             cycles += 4;
             RRA();
@@ -184,14 +362,6 @@ int LR35902::execute_cycle() {
             }
             JR_NZ_nn();
             break;
-        case 0x21:
-            cycles += 12;
-            LD_HL_nn();
-            break;
-        case 0x22:
-            cycles += 8;
-            LD__HLI__A();
-            break;
         case 0x23:
             cycles += 8;
             INC_ss(current_opcode);
@@ -203,10 +373,6 @@ int LR35902::execute_cycle() {
         case 0x25:
             cycles += 4;
             DEC_r(current_opcode);
-            break;
-        case 0x26:
-            cycles += 8;
-            LD_r_n(current_opcode);
             break;
         case 0x27:
             cycles += 4;
@@ -223,10 +389,6 @@ int LR35902::execute_cycle() {
             cycles += 8;
             ADD_HL_HL();
             break;
-        case 0x2A:
-            cycles += 8;
-            LD_A__HLI_();
-            break;
         case 0x2B:
             cycles += 8;
             DEC_ss(current_opcode);
@@ -238,10 +400,6 @@ int LR35902::execute_cycle() {
         case 0x2D:
             cycles += 4;
             DEC_r(current_opcode);
-            break;
-        case 0x2E:
-            cycles += 8;
-            LD_r_n(current_opcode);
             break;
         case 0x2F:
             cycles += 4;
@@ -255,14 +413,6 @@ int LR35902::execute_cycle() {
             }
             JR_NC_nn();
             break;
-        case 0x31:
-            cycles += 12;
-            LD_SP_nn();
-            break;
-        case 0x32:
-            cycles += 8;
-            LD__HLD__A();
-            break;
         case 0x33:
             cycles += 8;
             INC_ss(current_opcode);
@@ -274,10 +424,6 @@ int LR35902::execute_cycle() {
         case 0x35:
             cycles += 12;
             DEC_r(current_opcode);
-            break;
-        case 0x36:
-            cycles += 12;
-            LD_r_n(current_opcode);
             break;
         case 0x37:
             cycles += 4;
@@ -294,10 +440,6 @@ int LR35902::execute_cycle() {
             cycles += 8;
             ADD_HL_SP();
             break;
-        case 0x3A:
-            cycles += 8;
-            LD_A__HLD_();
-            break;
         case 0x3B:
             cycles += 8;
             DEC_ss(current_opcode);
@@ -309,10 +451,6 @@ int LR35902::execute_cycle() {
         case 0x3D:
             cycles += 4;
             DEC_r(current_opcode);
-            break;
-        case 0x3E:
-            cycles += 8;
-            LD_r_n(current_opcode);
             break;
         case 0x3F:
             cycles += 4;
@@ -390,10 +528,6 @@ int LR35902::execute_cycle() {
             }
             RET_NZ();
             break;
-        case 0xC1:
-            cycles += 12;
-            POP_BC();
-            break;
         case 0xC2:
             cycles += 12;
             if (PC != old_pc) {
@@ -411,10 +545,6 @@ int LR35902::execute_cycle() {
                 cycles += 8;
             }
             CALL_NZ_nn();
-            break;
-        case 0xC5:
-            cycles += 16;
-            PUSH_BC();
             break;
         case 0xC6:
             cycles += 8;
@@ -472,10 +602,6 @@ int LR35902::execute_cycle() {
             }
             RET_NC();
             break;
-        case 0xD1:
-            cycles += 12;
-            POP_DE();
-            break;
         case 0xD2:
             cycles += 12;
             if (PC != old_pc) {
@@ -492,10 +618,6 @@ int LR35902::execute_cycle() {
                 cycles += 12;
             }
             CALL_NC_nn();
-            break;
-        case 0xD5:
-            cycles += 16;
-            PUSH_DE();
             break;
         case 0xD6:
             cycles += 8;
@@ -545,27 +667,11 @@ int LR35902::execute_cycle() {
             RST(current_opcode);
             break;
 
-        case 0xE0:
-            cycles += 12;
-            LD__n__A();
-            break;
-        case 0xE1:
-            cycles += 12;
-            POP_HL();
-            break;
-        case 0xE2:
-            cycles += 8;
-            LD__C__A();
-            break;
         case 0xE3:
             cycles += 4;
             break;
         case 0xE4:
             cycles += 4;
-            break;
-        case 0xE5:
-            cycles += 16;
-            PUSH_HL();
             break;
         case 0xE6:
             cycles += 8;
@@ -582,10 +688,6 @@ int LR35902::execute_cycle() {
         case 0xE9:
             cycles += 4;
             JP__HL_();
-            break;
-        case 0xEA:
-            cycles += 16;
-            LD__nn__A();
             break;
         case 0xEB:
             cycles += 4;
@@ -605,28 +707,12 @@ int LR35902::execute_cycle() {
             RST(current_opcode);
             break;
 
-        case 0xF0:
-            cycles += 12;
-            LD_A__n_();
-            break;
-        case 0xF1:
-            cycles += 12;
-            POP_AF();
-            break;
-        case 0xF2:
-            cycles += 8;
-            LD_A__C_();
-            break;
         case 0xF3:
             cycles += 4;
             DI();
             break;
         case 0xF4:
             cycles += 4;
-            break;
-        case 0xF5:
-            cycles += 16;
-            PUSH_AF();
             break;
         case 0xF6:
             cycles += 8;
@@ -635,18 +721,6 @@ int LR35902::execute_cycle() {
         case 0xF7:
             cycles += 16;
             RST(current_opcode);
-            break;
-        case 0xF8:
-            cycles += 12;
-            LDHL_SP_n();
-            break;
-        case 0xF9:
-            cycles += 8;
-            LD_SP_HL();
-            break;
-        case 0xFA:
-            cycles += 16;
-            LD_A__nn_();
             break;
         case 0xFB:
             cycles += 4;
