@@ -240,7 +240,7 @@ int main (int argv, char** args) {
     auto *memory_bus = new MemoryBus(cartridge, timer, interrupt);
     memory_bus->load_boot_rom(fileBuf);
 
-    auto *cpu = new LR35902(memory_bus, interrupt, true);
+    auto *cpu = new LR35902(memory_bus, interrupt, false);
 
     auto *lcd = new Display(memory_bus, interrupt);
 
