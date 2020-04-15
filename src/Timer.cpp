@@ -5,8 +5,6 @@ bool testBit(uint8_t byte, int bit) {
 }
 
 Timer::Timer(Interrupt * system_interrupt) {
-    dividerVariable = 0;
-    timerVariable = 0;
     clockFreq = 1024;
     interrupt = system_interrupt;
     DIV = 0;
@@ -29,19 +27,13 @@ Timer::Timer(Interrupt * system_interrupt) {
  * cycles
  */
 void Timer::doTimers(int cycles) {
-    dividerVariable += cycles;
-
-    if (dividerVariable > 0xFF) {
-        dividerVariable -= 0x100;
-        ++DIV;
-    }
+    uint16_t oldDiv = DIV;
+    DIV += cycles;
 
     if (isClockEnabled()) {
-        timerVariable += cycles;
         setClockFreq();
 
-        if (timerVariable >= clockFreq) {
-            timerVariable -= clockFreq;
+        if (DIV >= clockFreq && oldDiv < clockFreq) {
             ++TIMA;
 
             if (TIMA == 0x00) {
@@ -53,7 +45,7 @@ void Timer::doTimers(int cycles) {
 }
 
 uint8_t Timer::getDIV() {
-    return DIV;
+    return DIV >> 8;
 }
 
 uint8_t Timer::getTIMA() {
@@ -78,9 +70,6 @@ uint8_t Timer::getClockFreq() {
 
 void Timer::setClockFreq() {
     switch (getClockFreq()) {
-        case 0:
-            clockFreq = 1024;  // 4194304 / 4096
-            break;
         case 1:
             clockFreq = 16;  // 4194304 / 262144
             break;
@@ -89,6 +78,9 @@ void Timer::setClockFreq() {
             break;
         case 3:
             clockFreq = 256;  // 4194304 / 16382
+            break;
+        case 0:
+            clockFreq = 1024;  // 4194304 / 4096
             break;
         default:
             break;

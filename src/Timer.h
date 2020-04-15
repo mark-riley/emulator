@@ -26,10 +26,8 @@ private:
 
     Interrupt * interrupt;
 
-    int dividerVariable;
-    int timerVariable;
     int clockFreq;
-    uint8_t DIV;
+    uint16_t DIV;
     uint8_t TIMA;
     uint8_t TMA;
     uint8_t TAC;
