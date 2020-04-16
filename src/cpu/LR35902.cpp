@@ -262,6 +262,270 @@ int LR35902::execute_cycle() {
             LD__nn__SP();
             break;
 
+        // 8-bit arithmetic and logical operation instructions
+        case 0x87: // add a, a
+        case 0x80: // add a, b
+        case 0x81: // add a, c
+        case 0x82: // add a, d
+        case 0x83: // add a, e
+        case 0x84: // add a, h
+        case 0x85: // add a, l
+            cycles = 4;
+            ADD_s(current_opcode);
+            break;
+
+        case 0xC6: // add a, n
+            cycles = 8;
+            ADD_A_n();
+            break;
+
+        case 0x86: // add a, (hl)
+            cycles = 8;
+            ADD_s(current_opcode);
+            break;
+
+        case 0x8F: // adc a, a
+        case 0x88: // adc a, b
+        case 0x89: // adc a, c
+        case 0x8A: // adc a, d
+        case 0x8B: // adc a, e
+        case 0x8C: // adc a, h
+        case 0x8D: // adc a, l
+            cycles = 4;
+            ADC_s(current_opcode);
+            break;
+
+        case 0xCE: // adc a, n
+            cycles = 8;
+            ADC_A_n();
+            break;
+
+        case 0x8E: // adc a, (hl)
+            cycles = 8;
+            ADC_s(current_opcode);
+            break;
+
+        case 0x97: // sub a, a
+        case 0x90: // sub a, b
+        case 0x91: // sub a, c
+        case 0x92: // sub a, d
+        case 0x93: // sub a, e
+        case 0x94: // sub a, h
+        case 0x95: // sub a, l
+            cycles = 4;
+            SUB_s(current_opcode);
+            break;
+
+        case 0xD6: // sub a, n
+            cycles = 8;
+            SUB_n();
+            break;
+
+        case 0x96: // sub a, (hl)
+            cycles = 8;
+            SUB_s(current_opcode);
+            break;
+
+        case 0x9F: // sbc a, a
+        case 0x98: // sbc a, b
+        case 0x99: // sbc a, c
+        case 0x9A: // sbc a, d
+        case 0x9B: // sbc a, e
+        case 0x9C: // sbc a, h
+        case 0x9D: // sbc a, l
+            cycles = 4;
+            SBC_s(current_opcode);
+            break;
+
+        case 0xDE: // sbc a, n
+            cycles = 8;
+            SBC_n();
+            break;
+
+        case 0x9E: // sbc a, (hl)
+            cycles = 8;
+            SBC_s(current_opcode);
+            break;
+
+        case 0xA7: // and a, a
+        case 0xA0: // and a, b
+        case 0xA1: // and a, c
+        case 0xA2: // and a, d
+        case 0xA3: // and a, e
+        case 0xA4: // and a, h
+        case 0xA5: // and a, l
+            cycles = 4;
+            AND_s(current_opcode);
+            break;
+
+        case 0xE6: // and a, n
+            cycles = 8;
+            AND_n();
+            break;
+
+        case 0xA6: // and a, (hl)
+            cycles = 8;
+            AND_s(current_opcode);
+            break;
+
+        case 0xB7: // or a, a
+        case 0xB0: // or a, b
+        case 0xB1: // or a, c
+        case 0xB2: // or a, d
+        case 0xB3: // or a, e
+        case 0xB4: // or a, h
+        case 0xB5: // or a, l
+            cycles = 4;
+            OR_s(current_opcode);
+            break;
+
+        case 0xF6: // or a, n
+            cycles = 8;
+            OR_n();
+            break;
+
+        case 0xB6: // or a, (hl)
+            cycles = 8;
+            OR_s(current_opcode);
+            break;
+
+        case 0xAF: // xor a, a
+        case 0xA8: // xor a, b
+        case 0xA9: // xor a, c
+        case 0xAA: // xor a, d
+        case 0xAB: // xor a, e
+        case 0xAC: // xor a, h
+        case 0xAD: // xor a, l
+            cycles = 4;
+            XOR_s(current_opcode);
+            break;
+
+        case 0xEE: // xor a, n
+            cycles = 8;
+            XOR_n();
+            break;
+
+        case 0xAE: // xor a, (hl)
+            cycles = 8;
+            XOR_s(current_opcode);
+            break;
+
+        case 0xBF: // cp a, a
+        case 0xB8: // cp a, b
+        case 0xB9: // cp a, c
+        case 0xBA: // cp a, d
+        case 0xBB: // cp a, e
+        case 0xBC: // cp a, h
+        case 0xBD: // cp a, l
+            cycles = 4;
+            CP_s(current_opcode);
+            break;
+
+        case 0xFE: // cp a, n
+            cycles = 8;
+            CP_n();
+            break;
+
+        case 0xBE: // cp a, (hl)
+            cycles = 8;
+            CP_s(current_opcode);
+            break;
+
+        case 0x3C: // inc a
+        case 0x04: // inc b
+        case 0x0C: // inc c
+        case 0x14: // inc d
+        case 0x1C: // inc e
+        case 0x24: // inc h
+        case 0x2C: // inc l
+            cycles = 4;
+            INC_r(current_opcode);
+            break;
+
+        case 0x34: // inc (hl)
+            cycles = 12;
+            INC_r(current_opcode);
+            break;
+
+        case 0x3D: // dec a
+        case 0x05: // dec b
+        case 0x0D: // dec c
+        case 0x15: // dec d
+        case 0x1D: // dec e
+        case 0x25: // dec h
+        case 0x2D: // dec l
+            cycles = 4;
+            DEC_r(current_opcode);
+            break;
+
+        case 0x35: // dec (hl)
+            cycles = 12;
+            DEC_r(current_opcode);
+            break;
+
+        // 16-bit Arithmetic Operation Instructions
+        case 0x09: // add hl, bc
+            cycles = 8;
+            ADD_HL_BC();
+            break;
+
+        case 0x19: // add hl, de
+            cycles = 8;
+            ADD_HL_DE();
+            break;
+
+        case 0x29: // add hl, hl
+            cycles = 8;
+            ADD_HL_HL();
+            break;
+
+        case 0x39: // add hl, sp
+            cycles = 8;
+            ADD_HL_SP();
+            break;
+
+        case 0xE8: // add sp, e
+            cycles = 16;
+            ADD_SP_n();
+            break;
+
+        case 0x03: // inc bc
+        case 0x13: // inc de
+        case 0x23: // inc hl
+        case 0x33: // inc sp
+            cycles = 8;
+            INC_ss(current_opcode);
+            break;
+
+        case 0x0B: // inc bc
+        case 0x1B: // inc de
+        case 0x2B: // inc hl
+        case 0x3B: // inc sp
+            cycles = 8;
+            DEC_ss(current_opcode);
+            break;
+
+        // Rotate Shift Instructions
+        case 0x07: // rlca
+            cycles = 4;
+            RLCA();
+            break;
+
+        case 0x17: // rla
+            cycles = 4;
+            RLA();
+            break;
+
+        case 0x0F: // rrca
+            cycles = 4;
+            RRCA();
+            break;
+
+        case 0x1F: // rra
+            cycles = 4;
+            RRA();
+            break;
+
         case 0x76: // halt
             cycles = 4;
             HALT();
@@ -273,86 +537,14 @@ int LR35902::execute_cycle() {
             cycles += 4;
             NOP(current_opcode);
             break;
-        case 0x03:
-            cycles += 8;
-            INC_ss(current_opcode);
-            break;
-        case 0x04:
-            cycles += 4;
-            INC_r(current_opcode);
-            break;
-        case 0x05:
-            cycles += 4;
-            DEC_r(current_opcode);
-            break;
-        case 0x07:
-            cycles += 4;
-            RLCA();
-            break;
-        case 0x09:
-            cycles += 8;
-            ADD_HL_BC();
-            break;
-        case 0x0B:
-            cycles += 8;
-            DEC_ss(current_opcode);
-            break;
-        case 0x0C:
-            cycles += 4;
-            INC_r(current_opcode);
-            break;
-        case 0x0D:
-            cycles += 4;
-            DEC_r(current_opcode);
-            break;
-        case 0x0F:
-            cycles += 4;
-            RRCA();
-            break;
 
         case 0x10:
             cycles += 4;
             STOP();
             break;
-        case 0x13:
-            cycles += 8;
-            INC_ss(current_opcode);
-            break;
-        case 0x14:
-            cycles += 4;
-            INC_r(current_opcode);
-            break;
-        case 0x15:
-            cycles += 4;
-            DEC_r(current_opcode);
-            break;
-        case 0x17:
-            cycles += 4;
-            RLA();
-            break;
         case 0x18:
             cycles += 12;
             JR_n();
-            break;
-        case 0x19:
-            cycles += 8;
-            ADD_HL_DE();
-            break;
-        case 0x1B:
-            cycles += 8;
-            DEC_ss(current_opcode);
-            break;
-        case 0x1C:
-            cycles += 4;
-            INC_r(current_opcode);
-            break;
-        case 0x1D:
-            cycles += 4;
-            DEC_r(current_opcode);
-            break;
-        case 0x1F:
-            cycles += 4;
-            RRA();
             break;
 
         case 0x20:
@@ -361,18 +553,6 @@ int LR35902::execute_cycle() {
                 cycles += 4;
             }
             JR_NZ_nn();
-            break;
-        case 0x23:
-            cycles += 8;
-            INC_ss(current_opcode);
-            break;
-        case 0x24:
-            cycles += 4;
-            INC_r(current_opcode);
-            break;
-        case 0x25:
-            cycles += 4;
-            DEC_r(current_opcode);
             break;
         case 0x27:
             cycles += 4;
@@ -384,22 +564,6 @@ int LR35902::execute_cycle() {
                 cycles += 4;
             }
             JR_Z_nn();
-            break;
-        case 0x29:
-            cycles += 8;
-            ADD_HL_HL();
-            break;
-        case 0x2B:
-            cycles += 8;
-            DEC_ss(current_opcode);
-            break;
-        case 0x2C:
-            cycles += 4;
-            INC_r(current_opcode);
-            break;
-        case 0x2D:
-            cycles += 4;
-            DEC_r(current_opcode);
             break;
         case 0x2F:
             cycles += 4;
@@ -413,18 +577,6 @@ int LR35902::execute_cycle() {
             }
             JR_NC_nn();
             break;
-        case 0x33:
-            cycles += 8;
-            INC_ss(current_opcode);
-            break;
-        case 0x34:
-            cycles += 12;
-            INC_r(current_opcode);
-            break;
-        case 0x35:
-            cycles += 12;
-            DEC_r(current_opcode);
-            break;
         case 0x37:
             cycles += 4;
             SCF();
@@ -436,89 +588,9 @@ int LR35902::execute_cycle() {
             }
             JR_C_nn();
             break;
-        case 0x39:
-            cycles += 8;
-            ADD_HL_SP();
-            break;
-        case 0x3B:
-            cycles += 8;
-            DEC_ss(current_opcode);
-            break;
-        case 0x3C:
-            cycles += 4;
-            INC_r(current_opcode);
-            break;
-        case 0x3D:
-            cycles += 4;
-            DEC_r(current_opcode);
-            break;
         case 0x3F:
             cycles += 4;
             CCF();
-            break;
-
-        case 0x86:
-            cycles += 4;
-        case 0x80 ... 0x85:
-        case 0x87:
-            cycles += 4;
-            ADD_s(current_opcode);
-            break;
-
-        case 0x8E:
-            cycles += 4;
-        case 0x88 ... 0x8D:
-        case 0x8F:
-            cycles += 4;
-            ADC_s(current_opcode);
-            break;
-
-        case 0x96:
-            cycles += 4;
-        case 0x90 ... 0x95:
-        case 0x97:
-            cycles += 4;
-            SUB_s(current_opcode);
-            break;
-
-        case 0x9E:
-            cycles += 4;
-        case 0x98 ... 0x9D:
-        case 0x9F:
-            cycles += 4;
-            SBC_s(current_opcode);
-            break;
-
-        case 0xA6:
-            cycles += 4;
-        case 0xA0 ... 0xA5:
-        case 0xA7:
-            cycles += 4;
-            AND_s(current_opcode);
-            break;
-
-        case 0xAE:
-            cycles += 4;
-        case 0xA8 ... 0xAD:
-        case 0xAF:
-            cycles += 4;
-            XOR_s(current_opcode);
-            break;
-
-        case 0xB6:
-            cycles += 4;
-        case 0xB0 ... 0xB5:
-        case 0xB7:
-            cycles += 4;
-            OR_s(current_opcode);
-            break;
-
-        case 0xBE:
-            cycles += 4;
-        case 0xB8 ... 0xBD:
-        case 0xBF:
-            cycles += 4;
-            CP_s(current_opcode);
             break;
 
         case 0xC0:
@@ -545,10 +617,6 @@ int LR35902::execute_cycle() {
                 cycles += 8;
             }
             CALL_NZ_nn();
-            break;
-        case 0xC6:
-            cycles += 8;
-            ADD_A_n();
             break;
         case 0xC7:
             cycles += 16;
@@ -586,10 +654,6 @@ int LR35902::execute_cycle() {
             cycles += 24;
             CALL_nn();
             break;
-        case 0xCE:
-            cycles += 8;
-            ADC_A_n();
-            break;
         case 0xCF:
             cycles += 16;
             RST(current_opcode);
@@ -618,10 +682,6 @@ int LR35902::execute_cycle() {
                 cycles += 12;
             }
             CALL_NC_nn();
-            break;
-        case 0xD6:
-            cycles += 8;
-            SUB_n();
             break;
         case 0xD7:
             cycles += 16;
@@ -658,10 +718,6 @@ int LR35902::execute_cycle() {
         case 0xDD:
             cycles += 4;
             break;
-        case 0xDE:
-            cycles += 4;
-            SBC_n();
-            break;
         case 0xDF:
             cycles += 16;
             RST(current_opcode);
@@ -673,17 +729,9 @@ int LR35902::execute_cycle() {
         case 0xE4:
             cycles += 4;
             break;
-        case 0xE6:
-            cycles += 8;
-            AND_n();
-            break;
         case 0xE7:
             cycles += 16;
             RST(current_opcode);
-            break;
-        case 0xE8:
-            cycles += 16;
-            ADD_SP_n();
             break;
         case 0xE9:
             cycles += 4;
@@ -698,10 +746,6 @@ int LR35902::execute_cycle() {
         case 0xED:
             cycles += 4;
             break;
-        case 0xEE:
-            cycles += 8;
-            XOR_n();
-            break;
         case 0xEF:
             cycles += 16;
             RST(current_opcode);
@@ -713,10 +757,6 @@ int LR35902::execute_cycle() {
             break;
         case 0xF4:
             cycles += 4;
-            break;
-        case 0xF6:
-            cycles += 8;
-            OR_n();
             break;
         case 0xF7:
             cycles += 16;
@@ -731,10 +771,6 @@ int LR35902::execute_cycle() {
             break;
         case 0xFD:
             cycles += 4;
-            break;
-        case 0xFE:
-            cycles += 8;
-            CP_n();
             break;
         case 0xFF:
             cycles += 16;
