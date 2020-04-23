@@ -18,15 +18,15 @@ public:
     void updateTIMA(uint8_t);
     void updateTMA(uint8_t);
     void updateTAC(uint8_t);
+    void calcTIMA();
 
 private:
     bool isClockEnabled();
     uint8_t getClockFreq();
-    void setClockFreq();
+    uint16_t getClockMask();
 
     Interrupt * interrupt;
 
-    int clockFreq;
     uint16_t DIV;
     uint8_t TIMA;
     uint8_t TMA;
