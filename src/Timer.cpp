@@ -5,7 +5,6 @@ bool testBit(uint8_t byte, int bit) {
 }
 
 Timer::Timer(Interrupt * system_interrupt) {
-    clockFreq = 1024;
     interrupt = system_interrupt;
     DIV = 0;
     TIMA = 0;
@@ -27,19 +26,26 @@ Timer::Timer(Interrupt * system_interrupt) {
  * cycles
  */
 void Timer::doTimers(int cycles) {
-    uint16_t oldDiv = DIV;
     DIV += cycles;
+//    if (((DIV >> getClockMask()) & 1) && isClockEnabled()) {
+////        uint16_t  mask = getClockMask();
+////        if ((DIV & mask) + 1 > mask) {
+//            ++TIMA;
+//            if (TIMA == 0x00) {
+//                TIMA = TMA;
+//                interrupt->request_interrupt(interrupt->TIMER);
+//            }
+////        }
+//    }
+    calcTIMA();
+}
 
-    if (isClockEnabled()) {
-        setClockFreq();
-
-        if (DIV >= clockFreq && oldDiv < clockFreq) {
-            ++TIMA;
-
-            if (TIMA == 0x00) {
-                TIMA = TMA;
-                interrupt->request_interrupt(interrupt->TIMER);
-            }
+void Timer::calcTIMA() {
+    if (((DIV >> getClockMask()) & 1) && isClockEnabled()) {
+        ++TIMA;
+        if (TIMA == 0x00) {
+            TIMA = TMA;
+            interrupt->request_interrupt(interrupt->TIMER);
         }
     }
 }
@@ -68,22 +74,26 @@ uint8_t Timer::getClockFreq() {
     return TAC & 0x3;
 }
 
-void Timer::setClockFreq() {
+uint16_t Timer::getClockMask() {
     switch (getClockFreq()) {
         case 1:
-            clockFreq = 16;  // 4194304 / 262144
-            break;
+            return 3;
+//            return 0x0008; // Increase TIMA every 16 clocks
+//            return 0x000F; // Increase TIMA every 16 clocks
         case 2:
-            clockFreq = 64;  // 4194304 / 65536
-            break;
+            return 5;
+//            return 0x0020; // Increase TIMA every 64 clocks
+//            return 0x003F; // Increase TIMA every 64 clocks
         case 3:
-            clockFreq = 256;  // 4194304 / 16382
-            break;
+            return 7;
+//            return 0x0080; // Increase TIMA every 256 clocks
+//            return 0x00FF; // Increase TIMA every 256 clocks
         case 0:
-            clockFreq = 1024;  // 4194304 / 4096
-            break;
+            return 9;
+//            return 0x0200; // Increase TIMA every 1024 clocks
+//            return 0x03FF; // Increase TIMA every 1024 clocks
         default:
-            break;
+            return 0;
     }
 }
 
@@ -100,10 +110,5 @@ void Timer::updateTMA(uint8_t value) {
 }
 
 void Timer::updateTAC(uint8_t value) {
-    uint8_t currentFreq = getClockFreq();
     TAC = value;
-    uint8_t newFreq = getClockFreq();
-    if (currentFreq != newFreq) {
-        setClockFreq();
-    }
 }

@@ -7,6 +7,8 @@
 #include "file-utils.h"
 
 #define BOOT_ROM "bios/dmg_boot.bin"
+//#define GAME_ROM "dmg-acid2.gb"
+
 //#define GAME_ROM "blargg/halt_bug.gb" // Fails 3db103c3
 
 //#define GAME_ROM "blargg/cgb_sound/cgb_sound.gb" // Not implemented
@@ -144,17 +146,17 @@
 
 //#define GAME_ROM "mooneye/acceptance/timer/div_write.gb" // Passes
 //#define GAME_ROM "mooneye/acceptance/timer/rapid_toggle.gb" // Fails 1
-//#define GAME_ROM "mooneye/acceptance/timer/tim00.gb" // Passes
+#define GAME_ROM "mooneye/acceptance/timer/tim00.gb" // Fails 2
 //#define GAME_ROM "mooneye/acceptance/timer/tim00_div_trigger.gb" // Fails 1
 //#define GAME_ROM "mooneye/acceptance/timer/tim01.gb" // Fails 2
 //#define GAME_ROM "mooneye/acceptance/timer/tim01_div_trigger.gb" // Fails 2
-//#define GAME_ROM "mooneye/acceptance/timer/tim10.gb" // Passes
+//#define GAME_ROM "mooneye/acceptance/timer/tim10.gb" // Fails 2
 //#define GAME_ROM "mooneye/acceptance/timer/tim10_div_trigger.gb" // Fails 2
-//#define GAME_ROM "mooneye/acceptance/timer/tim11.gb" // Passes
+//#define GAME_ROM "mooneye/acceptance/timer/tim11.gb" // Fails 2
 //#define GAME_ROM "mooneye/acceptance/timer/tim11_div_trigger.gb" // Fails 1
-//#define GAME_ROM "mooneye/acceptance/timer/tima_reload.gb" // Fails 4
+//#define GAME_ROM "mooneye/acceptance/timer/tima_reload.gb" // Fails 2
 //#define GAME_ROM "mooneye/acceptance/timer/tima_write_reloading.gb" // Fails 3
-//#define GAME_ROM "mooneye/acceptance/timer/tma_write_reloading.gb" // Fails 3
+//#define GAME_ROM "mooneye/acceptance/timer/tma_write_reloading.gb" // Fails 2
 
 //#define GAME_ROM "mooneye/emulator-only/mbc1/bits_bank1.gb" // Passes
 //#define GAME_ROM "mooneye/emulator-only/mbc1/bits_bank2.gb" // Fails R1 initial BANK2
