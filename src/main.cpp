@@ -23,7 +23,7 @@
 //#define GAME_ROM "blargg/cgb_sound/rom_singles/11-regs after power.gb" // Not implemented
 //#define GAME_ROM "blargg/cgb_sound/rom_singles/12-wave.gb" // Not implemented
 
-//#define GAME_ROM "blargg/cpu_instrs/cpu_instrs.gb" // Passes
+#define GAME_ROM "blargg/cpu_instrs/cpu_instrs.gb" // Passes
 //#define GAME_ROM "blargg/cpu_instrs/individual/01-special.gb" // Passes
 //#define GAME_ROM "blargg/cpu_instrs/individual/02-interrupts.gb" // Passes
 //#define GAME_ROM "blargg/cpu_instrs/individual/03-op sp,hl.gb" // Passes

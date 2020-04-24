@@ -1,6 +1,6 @@
 #include <cstdio>
 #include <cstring>
-#include <SDL2/SDL_log.h>
+#include <SDL_log.h>
 #include "MemoryBus.h"
 
 MemoryBus::MemoryBus(Cartridge * cart, Timer * system_timer, Interrupt * i) {

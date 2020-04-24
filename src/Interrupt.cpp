@@ -1,5 +1,5 @@
 #include "Interrupt.h"
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 bool Interrupt::test_bit(uint8_t byte, int bit) {
     return (byte >> bit) & 1;
