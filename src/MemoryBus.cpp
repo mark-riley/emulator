@@ -93,22 +93,22 @@ void MemoryBus::write_byte(uint16_t memory_location, uint8_t byte) {
         // Unusable Memory - do not write
     } else if (memory_location < ZERO_PAGE_OFFSET) {
         if (memory_location==0xFF04){
-            timer->updateDIV(byte);
+            timer->setDIV(byte);
             return;
         }
 
         if (memory_location==0xFF05){
-            timer->updateTIMA(byte);
+            timer->setTIMA(byte);
             return;
         }
 
         if (memory_location==0xFF06){
-            timer->updateTMA(byte);
+            timer->setTMA(byte);
             return;
         }
 
         if (memory_location==0xFF07){
-            timer->updateTAC(byte);
+            timer->setTAC(byte);
             return;
         }
 

@@ -26,21 +26,15 @@ Timer::Timer(Interrupt * system_interrupt) {
  * cycles
  */
 void Timer::doTimers(int cycles) {
-    DIV += cycles;
-//    if (((DIV >> getClockMask()) & 1) && isClockEnabled()) {
-////        uint16_t  mask = getClockMask();
-////        if ((DIV & mask) + 1 > mask) {
-//            ++TIMA;
-//            if (TIMA == 0x00) {
-//                TIMA = TMA;
-//                interrupt->request_interrupt(interrupt->TIMER);
-//            }
-////        }
-//    }
-    calcTIMA();
+    updateDIV(cycles);
+    updateTIMA();
 }
 
-void Timer::calcTIMA() {
+void Timer::updateDIV(int cycles) {
+    DIV += cycles;
+}
+
+void Timer::updateTIMA() {
     if (((DIV >> getClockMask()) & 1) && isClockEnabled()) {
         ++TIMA;
         if (TIMA == 0x00) {
@@ -97,18 +91,18 @@ uint16_t Timer::getClockMask() {
     }
 }
 
-void Timer::updateDIV(uint8_t value) {
+void Timer::setDIV(uint8_t) {
     DIV = 0;
 }
 
-void Timer::updateTIMA(uint8_t value) {
+void Timer::setTIMA(uint8_t value) {
     TIMA = value;
 }
 
-void Timer::updateTMA(uint8_t value) {
+void Timer::setTMA(uint8_t value) {
     TMA = value;
 }
 
-void Timer::updateTAC(uint8_t value) {
+void Timer::setTAC(uint8_t value) {
     TAC = value;
 }

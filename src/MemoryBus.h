@@ -33,6 +33,7 @@ public:
 
     void increment_LY();
     void reset_LY();
+    Timer * timer;
 private:
     std::vector<uint8_t> boot_rom; // 0000H - 00FFH
     uint8_t vram[0x2000]; // 8000H - 9FFFH
@@ -43,7 +44,6 @@ private:
     uint8_t zero_page[0x7F]; // FF80H - FFFEH
 
     Cartridge * cartridge;
-    Timer * timer;
     Interrupt * interrupt;
 };
 

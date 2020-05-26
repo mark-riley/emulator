@@ -14,11 +14,13 @@ public:
     uint8_t getTIMA();
     uint8_t getTMA();
     uint8_t getTAC();
-    void updateDIV(uint8_t);
-    void updateTIMA(uint8_t);
-    void updateTMA(uint8_t);
-    void updateTAC(uint8_t);
-    void calcTIMA();
+    void setDIV(uint8_t);
+    void setTIMA(uint8_t);
+    void setTMA(uint8_t);
+    void setTAC(uint8_t);
+    void updateTIMA();
+    void updateDIV(int);
+    uint16_t DIV;
 
 private:
     bool isClockEnabled();
@@ -27,7 +29,6 @@ private:
 
     Interrupt * interrupt;
 
-    uint16_t DIV;
     uint8_t TIMA;
     uint8_t TMA;
     uint8_t TAC;

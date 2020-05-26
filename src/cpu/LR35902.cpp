@@ -26,6 +26,9 @@ int LR35902::execute_cycle() {
         cycles += 4;
         return cycles;
     }
+    if (PC == 0x0100) {
+        SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "DIV: %04X\n", memory->timer->DIV);
+    }
     uint8_t current_opcode = fetch_byte();
 //    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "opcode: %02X\n", current_opcode);
 
