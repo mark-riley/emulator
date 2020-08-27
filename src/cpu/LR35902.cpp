@@ -19,7 +19,7 @@ LR35902::LR35902(MemoryBus * memory_bus, Interrupt * i, bool skip_bios) {
 }
 
 int LR35902::execute_cycle() {
-//     SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "AF: %04X BC: %04X DE: %04X HL: %04X SP: %04X PC: %04X\n", AF, BC, DE, HL, SP, PC);
+//    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "A: %02X F: %02X B: %02X C: %02X D: %02X E: %02X H: %02X L: %02X SP: %04X PC: %04X\n", get_A(), get_F(), get_D(), get_E(), get_H(), get_L(), SP, PC);
 
     int cycles = 0;
     if (halt) {

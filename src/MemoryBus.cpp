@@ -8,11 +8,12 @@ MemoryBus::MemoryBus(Cartridge * cart, Timer * system_timer, Interrupt * i) {
     cartridge = cart;
     timer = system_timer;
     interrupt = i;
+    use_boot_rom = true;
 }
 
 uint8_t MemoryBus::read_byte(uint16_t memory_location) {
     if (memory_location < 0x100) {
-        if (!(read_byte(0xFF50) & 0x1)) {
+        if (use_boot_rom) {
             return boot_rom[memory_location - BOOT_ROM_OFFSET];
         } else {
             return cartridge->peek(memory_location);
@@ -124,6 +125,13 @@ void MemoryBus::write_byte(uint16_t memory_location, uint8_t byte) {
 
         if (memory_location==0xFF46){
             doDMATransfer(byte);
+            return;
+        }
+
+        if (memory_location==0xFF50){
+            if (byte & 0x1) {
+                use_boot_rom = false;
+            }
             return;
         }
 

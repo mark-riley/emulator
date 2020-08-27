@@ -43,6 +43,8 @@ private:
     uint8_t hardware_io[0x80]; // FF00H - FF7FH
     uint8_t zero_page[0x7F]; // FF80H - FFFEH
 
+    bool use_boot_rom;
+
     Cartridge * cartridge;
     Interrupt * interrupt;
 };

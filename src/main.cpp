@@ -25,7 +25,7 @@
 //#define GAME_ROM "blargg/cgb_sound/rom_singles/11-regs after power.gb" // Not implemented
 //#define GAME_ROM "blargg/cgb_sound/rom_singles/12-wave.gb" // Not implemented
 
-//#define GAME_ROM "blargg/cpu_instrs/cpu_instrs.gb" // Passes
+#define GAME_ROM "blargg/cpu_instrs/cpu_instrs.gb" // Passes
 //#define GAME_ROM "blargg/cpu_instrs/individual/01-special.gb" // Passes
 //#define GAME_ROM "blargg/cpu_instrs/individual/02-interrupts.gb" // Passes
 //#define GAME_ROM "blargg/cpu_instrs/individual/03-op sp,hl.gb" // Passes
@@ -145,7 +145,7 @@
 //#define GAME_ROM "mooneye/acceptance/serial/boot_sclk_align-dmgABCmgb.gb" // Not implemented
 
 //#define GAME_ROM "mooneye/acceptance/timer/div_write.gb" // Passes
-#define GAME_ROM "mooneye/acceptance/timer/rapid_toggle.gb" // Fails 1
+//#define GAME_ROM "mooneye/acceptance/timer/rapid_toggle.gb" // Fails 1
 //#define GAME_ROM "mooneye/acceptance/timer/tim00.gb" // Fails 2
 //#define GAME_ROM "mooneye/acceptance/timer/tim00_div_trigger.gb" // Fails 1
 //#define GAME_ROM "mooneye/acceptance/timer/tim01.gb" // Fails 2

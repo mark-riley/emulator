@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-#set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 
 project(emulator)
 
