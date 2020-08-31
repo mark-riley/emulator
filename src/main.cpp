@@ -273,14 +273,56 @@ int main (int argv, char** args) {
             }
             if (e.type == SDL_KEYDOWN)
             {
+                uint8_t input = 0x00;
                 switch (e.key.keysym.sym)
                 {
                     case SDLK_ESCAPE:
                         running = false;
                         break;
+                    case SDLK_UP:
+                        input |= 1 << 4;
+                        input |= 1 << 2;
+                        interrupt->request_interrupt(interrupt->CONTROLLER);
+                        break;
+                    case SDLK_DOWN:
+                        input |= 1 << 4;
+                        input |= 1 << 3;
+                        interrupt->request_interrupt(interrupt->CONTROLLER);
+                        break;
+                    case SDLK_LEFT:
+                        input |= 1 << 4;
+                        input |= 1 << 1;
+                        interrupt->request_interrupt(interrupt->CONTROLLER);
+                        break;
+                    case SDLK_RIGHT:
+                        input |= 1 << 4;
+                        input |= 1;
+                        interrupt->request_interrupt(interrupt->CONTROLLER);
+                        break;
+                    case SDLK_z:
+                        input |= 1 << 5;
+                        input |= 1 << 1;
+                        interrupt->request_interrupt(interrupt->CONTROLLER);
+                        break;
+                    case SDLK_x:
+                        input |= 1 << 5;
+                        input |= 1;
+                        interrupt->request_interrupt(interrupt->CONTROLLER);
+                        break;
+                    case SDLK_RETURN:
+                        input |= 1 << 5;
+                        input |= 1 << 3;
+                        interrupt->request_interrupt(interrupt->CONTROLLER);
+                        break;
+                    case SDLK_RSHIFT:
+                        input |= 1 << 5;
+                        input |= 1 << 2;
+                        interrupt->request_interrupt(interrupt->CONTROLLER);
+                        break;
                     default:
                         break;
                 }
+                memory_bus->write_byte(0xFF00, input);
             }
         }
     }
