@@ -12,13 +12,12 @@ MemoryBus::MemoryBus(Cartridge * cart, Timer * system_timer, Interrupt * i) {
 }
 
 uint8_t MemoryBus::read_byte(uint16_t memory_location) {
-    if (memory_location < 0x100) {
-        if (use_boot_rom) {
-            return boot_rom[memory_location - BOOT_ROM_OFFSET];
-        } else {
-            return cartridge->peek(memory_location);
+    if (memory_location < ROM_BANK_X_OFFSET) {
+        if (memory_location < 0x100) {
+            if (use_boot_rom) {
+                return boot_rom[memory_location - BOOT_ROM_OFFSET];
+            }
         }
-    } else if (memory_location < ROM_BANK_X_OFFSET) {
         return cartridge->peek(memory_location);
     } else if (memory_location < VRAM_OFFSET) {
         return cartridge->peek(memory_location);

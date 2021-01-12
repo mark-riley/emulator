@@ -7,6 +7,16 @@
 #include "file-utils.h"
 
 #define BOOT_ROM "bios/dmg_boot.bin"
+
+//#define GAME_ROM "games/Alleyway (World).gb"
+//#define GAME_ROM "games/Baseball (World).gb"
+//#define GAME_ROM "games/Super Mario Land (World).gb"
+#define GAME_ROM "games/Tennis (World).gb"
+//#define GAME_ROM "games/Tetris (World) (Rev A).gb"
+//#define GAME_ROM "games/Yakuman (Japan).gb"
+
+//#define GAME_ROM "games/Dr. Mario (World).gb"
+
 //#define GAME_ROM "dmg-acid2.gb"
 
 //#define GAME_ROM "blargg/halt_bug.gb" // Fails 3db103c3
@@ -25,7 +35,7 @@
 //#define GAME_ROM "blargg/cgb_sound/rom_singles/11-regs after power.gb" // Not implemented
 //#define GAME_ROM "blargg/cgb_sound/rom_singles/12-wave.gb" // Not implemented
 
-#define GAME_ROM "blargg/cpu_instrs/cpu_instrs.gb" // Passes
+//#define GAME_ROM "blargg/cpu_instrs/cpu_instrs.gb" // Passes
 //#define GAME_ROM "blargg/cpu_instrs/individual/01-special.gb" // Passes
 //#define GAME_ROM "blargg/cpu_instrs/individual/02-interrupts.gb" // Passes
 //#define GAME_ROM "blargg/cpu_instrs/individual/03-op sp,hl.gb" // Passes
@@ -203,14 +213,6 @@
 //#define GAME_ROM "mooneye/utils/bootrom_dumper.gb"
 //#define GAME_ROM "mooneye/utils/dump_boot_hwio.gb"
 
-//#define GAME_ROM "games/Dr. Mario (World) (Rev A).gb"
-//#define GAME_ROM "games/Pokemon - Blue Version (USA, Europe) (SGB Enhanced).gb"
-//#define GAME_ROM "games/Legend of Zelda, The - Link's Awakening (U) (V1.2) [!].gb"
-//#define GAME_ROM "games/Legend of Zelda, The - Link's Awakening DX (U) (V1.2) [C][!].gbc"
-//#define GAME_ROM "games/Tetris (World).gb"
-//#define GAME_ROM "games/Alleyway (World).gb"
-//#define GAME_ROM "games/Super Mario Land (World) (Rev A).gb"
-
 //#define GAME_ROM "misc/dmg_test_prog_ver1.gb"
 //#define GAME_ROM "misc/dycptest2.gb"
 //#define GAME_ROM "misc/bgbtest.gb"
@@ -252,7 +254,7 @@ int main (int argv, char** args) {
 //    4194304  // clock cycles per second (2^22)
 //    59.73 hz - refresh rate
 //    4194304 / 59.73 = 70221
-    const int MAX_CYCLES = 70221;
+    const int MAX_CYCLES = 70368;
 //5016
     while (running) {
         int cyclesThisUpdate = 0;

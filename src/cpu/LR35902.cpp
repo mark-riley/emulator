@@ -2,6 +2,43 @@
 #include "LR35902.h"
 
 LR35902::LR35902(MemoryBus * memory_bus, Interrupt * i, bool skip_bios) {
+//    memory_bus->write_byte(0xFF00, 0xCF);
+//    memory_bus->write_byte(0xFF05, 0x0);
+//    memory_bus->write_byte(0xFF06, 0x0);
+//    memory_bus->write_byte(0xFF07, 0x0);
+//    memory_bus->write_byte(0xFF10, 0x80);
+//    memory_bus->write_byte(0xFF11, 0xBF);
+//    memory_bus->write_byte(0xFF12, 0xF3);
+//    memory_bus->write_byte(0xFF14, 0xBF);
+//    memory_bus->write_byte(0xFF16, 0x3F);
+//    memory_bus->write_byte(0xFF17, 0x00);
+//    memory_bus->write_byte(0xFF19, 0xBF);
+//    memory_bus->write_byte(0xFF1A, 0x7F);
+//    memory_bus->write_byte(0xFF1B, 0xFF);
+//    memory_bus->write_byte(0xFF1C, 0x9F);
+//    memory_bus->write_byte(0xFF1E, 0xBF);
+//    memory_bus->write_byte(0xFF20, 0xFF);
+//    memory_bus->write_byte(0xFF21, 0x00);
+//    memory_bus->write_byte(0xFF22, 0x00);
+//    memory_bus->write_byte(0xFF23, 0xBF);
+//    memory_bus->write_byte(0xFF24, 0x77);
+//    memory_bus->write_byte(0xFF25, 0xF3);
+//    memory_bus->write_byte(0xFF26, 0xF1);
+
+//    memory_bus->write_byte(0xFF40, 0x91);
+//    memory_bus->write_byte(0xFF42, 0x00);
+    memory_bus->write_byte(0xFF43, 0x00);
+//    memory_bus->write_byte(0xFF44, 0x00);
+//    memory_bus->write_byte(0xFF45, 0x00);
+//    memory_bus->write_byte(0xFF47, 0xFC);
+//    memory_bus->write_byte(0xFF48, 0xFF);
+//    memory_bus->write_byte(0xFF49, 0xFF);
+//    memory_bus->write_byte(0xFF4A, 0x00);
+//    memory_bus->write_byte(0xFF4B, 0x00);
+
+    //    memory_bus->write_byte(0xFF0F, 0x00);
+//    memory_bus->write_byte(0xFFFF, 0x00);
+
     if (skip_bios) {
         PC = 0x0100;
         set_AF(0x01B0);
@@ -19,19 +56,13 @@ LR35902::LR35902(MemoryBus * memory_bus, Interrupt * i, bool skip_bios) {
 }
 
 int LR35902::execute_cycle() {
-//    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "A: %02X F: %02X B: %02X C: %02X D: %02X E: %02X H: %02X L: %02X SP: %04X PC: %04X\n", get_A(), get_F(), get_D(), get_E(), get_H(), get_L(), SP, PC);
-
     int cycles = 0;
     if (halt) {
         cycles += 4;
         return cycles;
     }
-    if (PC == 0x0100) {
-        SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "DIV: %04X\n", memory->timer->DIV);
-    }
     uint8_t current_opcode = fetch_byte();
-//    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "opcode: %02X\n", current_opcode);
-
+//    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "opcode: %02X AF: %04X BC: %04X DE: %04X HL: %04X SP: %04X PC: %04X\n", current_opcode, get_AF(), get_BC(), get_DE(), get_HL(), SP, PC - 1);
     uint16_t old_pc = PC;
 
     switch (current_opcode) {
@@ -95,6 +126,26 @@ int LR35902::execute_cycle() {
             LD_r_r_(current_opcode);
             break;
 
+        case 0x7E: // ld a, (hl)
+        case 0x46: // ld b, (hl)
+        case 0x4E: // ld c, (hl)
+        case 0x56: // ld d, (hl)
+        case 0x5E: // ld e, (hl)
+        case 0x66: // ld h, (hl)
+        case 0x6E: // ld l, (hl)
+
+        case 0x77: // ld (hl), a
+        case 0x70: // ld (hl), b
+        case 0x71: // ld (hl), c
+        case 0x72: // ld (hl), d
+        case 0x73: // ld (hl), e
+        case 0x74: // ld (hl), h
+        case 0x75: // ld (hl), l
+            // different block due to different cycles
+            cycles = 8;
+            LD_r_r_(current_opcode);
+            break;
+
         case 0x3E: // ld a, n
         case 0x06: // ld b, n
         case 0x0E: // ld c, n
@@ -104,28 +155,6 @@ int LR35902::execute_cycle() {
         case 0x2E: // ld l, n
             cycles = 8;
             LD_r_n(current_opcode);
-            break;
-
-        case 0x7E: // ld a, (hl)
-        case 0x46: // ld b, (hl)
-        case 0x4E: // ld c, (hl)
-        case 0x56: // ld d, (hl)
-        case 0x5E: // ld e, (hl)
-        case 0x66: // ld h, (hl)
-        case 0x6E: // ld l, (hl)
-            cycles = 8;
-            LD_r_r_(current_opcode);
-            break;
-
-        case 0x77: // ld (hl), a
-        case 0x70: // ld (hl), b
-        case 0x71: // ld (hl), c
-        case 0x72: // ld (hl), d
-        case 0x73: // ld (hl), e
-        case 0x74: // ld (hl), h
-        case 0x75: // ld (hl), l
-            cycles = 8;
-            LD_r_r_(current_opcode);
             break;
 
         case 0x36: // ld (hl), n
@@ -552,10 +581,10 @@ int LR35902::execute_cycle() {
 
         case 0x20:
             cycles += 8;
+            JR_NZ_nn();
             if (PC != old_pc) {
                 cycles += 4;
             }
-            JR_NZ_nn();
             break;
         case 0x27:
             cycles += 4;
@@ -563,10 +592,10 @@ int LR35902::execute_cycle() {
             break;
         case 0x28:
             cycles += 8;
+            JR_Z_nn();
             if (PC != old_pc) {
                 cycles += 4;
             }
-            JR_Z_nn();
             break;
         case 0x2F:
             cycles += 4;
@@ -575,10 +604,10 @@ int LR35902::execute_cycle() {
 
         case 0x30:
             cycles += 8;
+            JR_NC_nn();
             if (PC != old_pc) {
                 cycles += 4;
             }
-            JR_NC_nn();
             break;
         case 0x37:
             cycles += 4;
@@ -586,10 +615,10 @@ int LR35902::execute_cycle() {
             break;
         case 0x38:
             cycles += 8;
+            JR_C_nn();
             if (PC != old_pc) {
                 cycles += 4;
             }
-            JR_C_nn();
             break;
         case 0x3F:
             cycles += 4;
@@ -598,17 +627,17 @@ int LR35902::execute_cycle() {
 
         case 0xC0:
             cycles += 8;
+            RET_NZ();
             if (PC != old_pc) {
                 cycles += 12;
             }
-            RET_NZ();
             break;
         case 0xC2:
             cycles += 12;
+            JP_NZ_nn();
             if (PC != old_pc) {
                 cycles += 4;
             }
-            JP_NZ_nn();
             break;
         case 0xC3:
             cycles += 16;
@@ -616,10 +645,10 @@ int LR35902::execute_cycle() {
             break;
         case 0xC4:
             cycles += 12;
+            CALL_NZ_nn();
             if (PC != old_pc) {
                 cycles += 8;
             }
-            CALL_NZ_nn();
             break;
         case 0xC7:
             cycles += 16;
@@ -627,10 +656,10 @@ int LR35902::execute_cycle() {
             break;
         case 0xC8:
             cycles += 8;
+            RET_Z();
             if (PC != old_pc) {
                 cycles += 12;
             }
-            RET_Z();
             break;
         case 0xC9:
             cycles += 16;
@@ -638,20 +667,20 @@ int LR35902::execute_cycle() {
             break;
         case 0xCA:
             cycles += 12;
+            JP_Z_nn();
             if (PC != old_pc) {
                 cycles += 4;
             }
-            JP_Z_nn();
             break;
         case 0xCB:
             cycles = cb_instruction();
             break;
         case 0xCC:
             cycles += 12;
+            CALL_Z_nn();
             if (PC != old_pc) {
                 cycles += 12;
             }
-            CALL_Z_nn();
             break;
         case 0xCD:
             cycles += 24;
@@ -664,27 +693,27 @@ int LR35902::execute_cycle() {
 
         case 0xD0:
             cycles += 8;
+            RET_NC();
             if (PC != old_pc) {
                 cycles += 12;
             }
-            RET_NC();
             break;
         case 0xD2:
             cycles += 12;
+            JP_NC_nn();
             if (PC != old_pc) {
                 cycles += 4;
             }
-            JP_NC_nn();
             break;
         case 0xD3:
             cycles += 4;
             break;
         case 0xD4:
             cycles += 12;
+            CALL_NC_nn();
             if (PC != old_pc) {
                 cycles += 12;
             }
-            CALL_NC_nn();
             break;
         case 0xD7:
             cycles += 16;
@@ -692,10 +721,10 @@ int LR35902::execute_cycle() {
             break;
         case 0xD8:
             cycles += 8;
+            RET_C();
             if (PC != old_pc) {
                 cycles += 12;
             }
-            RET_C();
             break;
         case 0xD9:
             cycles += 16;
@@ -703,20 +732,20 @@ int LR35902::execute_cycle() {
             break;
         case 0xDA:
             cycles += 16;
+            JP_C_nn();
             if (PC != old_pc) {
                 cycles += 4;
             }
-            JP_C_nn();
             break;
         case 0xDB:
             cycles += 4;
             break;
         case 0xDC:
             cycles += 12;
+            CALL_C_nn();
             if (PC != old_pc) {
                 cycles += 12;
             }
-            CALL_C_nn();
             break;
         case 0xDD:
             cycles += 4;
@@ -1292,13 +1321,12 @@ bool LR35902::get_half_borrow(uint8_t x, uint8_t y) {
 
 void LR35902::PUSH(uint16_t data) {
     memory->write_byte(get_SP() - 1, data >> 8);
-    memory->write_byte(get_SP() - 2, data & 0xFF);
+    memory->write_byte(get_SP() - 2, data & 0x00FF);
     set_SP(get_SP() - 2);
 }
 
 uint16_t LR35902::POP() {
-    uint16_t data = memory->read_byte(get_SP());
-    data |= (memory->read_byte(get_SP() + 1) << 8);
+    uint16_t data = (memory->read_byte(get_SP() + 1) << 8) | memory->read_byte(get_SP());
     set_SP(get_SP() + 2);
     return data;
 }
