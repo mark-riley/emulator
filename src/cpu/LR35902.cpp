@@ -36,7 +36,7 @@ LR35902::LR35902(MemoryBus* memory_bus, Interrupt* i, bool skip_bios) {
 //    memory_bus->write_byte(0xFF4A, 0x00);
 //    memory_bus->write_byte(0xFF4B, 0x00);
 
-    //    memory_bus->write_byte(0xFF0F, 0x00);
+//    memory_bus->write_byte(0xFF0F, 0x00);
 //    memory_bus->write_byte(0xFFFF, 0x00);
 
     if (skip_bios) {

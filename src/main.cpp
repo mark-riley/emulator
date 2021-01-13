@@ -222,9 +222,6 @@
 //#define GAME_ROM "misc/naughtyemu.gb"
 
 int main (int argv, char** args) {
-    int running = true;
-    SDL_Event e;
-
     // Loading the boot rom
     const char* filePath = BOOT_ROM;
     std::vector<uint8_t> fileBuf = readFileToBuffer(filePath);
@@ -238,99 +235,9 @@ int main (int argv, char** args) {
     SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "ROM Size: %d\n", cartridge->getRomBanks());
     SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "RAM Size: %d\n", cartridge->getRamBanks());
 
-    auto* gameboy = new Gameboy(cartridge);
+    auto* gameboy = new Gameboy(cartridge, fileBuf);
 
-    auto* interrupt = new Interrupt();
-
-    auto* timer = new Timer(interrupt);
-
-    auto* memory_bus = new MemoryBus(cartridge, timer, interrupt);
-    memory_bus->load_boot_rom(fileBuf);
-
-    auto* cpu = new LR35902(memory_bus, interrupt, false);
-
-    auto* lcd = new Display(memory_bus, interrupt);
-
-    auto* render = new Render(lcd);
-    render->init(cartridge->getTitle());
-
-//    4194304  // clock cycles per second (2^22)
-//    59.73 hz - refresh rate
-//    4194304 / 59.73 = 70221
-    const int MAX_CYCLES = 70368;
-//5016
-    while (running) {
-        int cyclesThisUpdate = 0;
-        while(cyclesThisUpdate <= MAX_CYCLES) {
-            // start
-            int cycles = cpu->check_interrupts();
-            cycles += cpu->execute_cycle();
-            cyclesThisUpdate += cycles;
-            lcd->UpdateGraphics(cycles);
-            timer->doTimers(cycles);
-        }
-
-        render->renderScreen();
-
-        while(SDL_PollEvent(&e)) {
-            if (e.type == SDL_QUIT) {
-                running = false;
-            }
-            if (e.type == SDL_KEYDOWN)
-            {
-                uint8_t input = 0x00;
-                switch (e.key.keysym.sym)
-                {
-                    case SDLK_ESCAPE:
-                        running = false;
-                        break;
-                    case SDLK_UP:
-                        input |= 1 << 4;
-                        input |= 1 << 2;
-                        interrupt->request_interrupt(interrupt->CONTROLLER);
-                        break;
-                    case SDLK_DOWN:
-                        input |= 1 << 4;
-                        input |= 1 << 3;
-                        interrupt->request_interrupt(interrupt->CONTROLLER);
-                        break;
-                    case SDLK_LEFT:
-                        input |= 1 << 4;
-                        input |= 1 << 1;
-                        interrupt->request_interrupt(interrupt->CONTROLLER);
-                        break;
-                    case SDLK_RIGHT:
-                        input |= 1 << 4;
-                        input |= 1;
-                        interrupt->request_interrupt(interrupt->CONTROLLER);
-                        break;
-                    case SDLK_z:
-                        input |= 1 << 5;
-                        input |= 1 << 1;
-                        interrupt->request_interrupt(interrupt->CONTROLLER);
-                        break;
-                    case SDLK_x:
-                        input |= 1 << 5;
-                        input |= 1;
-                        interrupt->request_interrupt(interrupt->CONTROLLER);
-                        break;
-                    case SDLK_RETURN:
-                        input |= 1 << 5;
-                        input |= 1 << 3;
-                        interrupt->request_interrupt(interrupt->CONTROLLER);
-                        break;
-                    case SDLK_RSHIFT:
-                        input |= 1 << 5;
-                        input |= 1 << 2;
-                        interrupt->request_interrupt(interrupt->CONTROLLER);
-                        break;
-                    default:
-                        break;
-                }
-                memory_bus->write_byte(0xFF00, input);
-            }
-        }
-    }
+    gameboy->powerOn();
 
     return 0;
 }
