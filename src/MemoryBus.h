@@ -23,7 +23,7 @@
 
 class MemoryBus {
 public:
-    explicit MemoryBus(Cartridge *, Timer *, Interrupt *);
+    explicit MemoryBus(Cartridge*, Timer*, Interrupt*);
     void load_boot_rom(std::vector<uint8_t>);
     uint8_t read_byte(uint16_t);
     uint16_t read_word(uint16_t);
@@ -33,7 +33,7 @@ public:
 
     void increment_LY();
     void reset_LY();
-    Timer * timer;
+    Timer* timer;
 private:
     std::vector<uint8_t> boot_rom; // 0000H - 00FFH
     uint8_t vram[0x2000]; // 8000H - 9FFFH
@@ -45,8 +45,8 @@ private:
 
     bool use_boot_rom;
 
-    Cartridge * cartridge;
-    Interrupt * interrupt;
+    Cartridge* cartridge;
+    Interrupt* interrupt;
 };
 
 #endif //EMULATOR_MEMORYBUS_H

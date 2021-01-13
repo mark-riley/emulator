@@ -28,7 +28,7 @@ void main() { \n \
     FragColor = texture(screen_texture, TexCoord); \n \
 }\n\0"
 
-Render::Render(Display * lcd) {
+Render::Render(Display* lcd) {
     display = lcd;
 }
 
@@ -54,7 +54,7 @@ void Render::init(std::string title) {
         std::cout << "Failed to initialize GLAD" << std::endl;
     }
 
-    const GLchar *vertexShaderSource = SIMPLE_VERTEX_SHADER;
+    const GLchar* vertexShaderSource = SIMPLE_VERTEX_SHADER;
 
     GLuint vertexShader;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -69,7 +69,7 @@ void Render::init(std::string title) {
         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
-    const GLchar *fragmentShaderSource = SIMPLE_FRAGMENT_SHADER;
+    const GLchar* fragmentShaderSource = SIMPLE_FRAGMENT_SHADER;
 
     GLuint fragmentShader;
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -125,10 +125,10 @@ void Render::init(std::string title) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void *) nullptr);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*) nullptr);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid *) (3 * sizeof(GLfloat)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*) (3 * sizeof(GLfloat)));
     glEnableVertexAttribArray(1);
 
     glBindVertexArray(0);

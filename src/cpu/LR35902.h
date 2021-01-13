@@ -211,11 +211,11 @@ public:
     void RET_C();
     void RETI();
 
-    MemoryBus * memory;
-    Interrupt * interrupt;
+    MemoryBus* memory;
+    Interrupt* interrupt;
     bool halt;
 
-    explicit LR35902(MemoryBus *, Interrupt *, bool);
+    explicit LR35902(MemoryBus*, Interrupt*, bool);
     int execute_cycle();
     int cb_instruction();
     uint8_t fetch_byte();

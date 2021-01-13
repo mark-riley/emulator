@@ -4,7 +4,7 @@ bool testBit(uint8_t byte, int bit) {
     return byte >> bit & 1;
 }
 
-Timer::Timer(Interrupt * system_interrupt) {
+Timer::Timer(Interrupt* system_interrupt) {
     interrupt = system_interrupt;
     DIV = 0;
     TIMA = 0;

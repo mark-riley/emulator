@@ -7,7 +7,7 @@
 #include <glad/glad.h>
 #include "Display.h"
 
-Display::Display(MemoryBus *m, Interrupt *i) {
+Display::Display(MemoryBus* m, Interrupt* i) {
     memory = m;
     interrupt = i;
 
@@ -27,8 +27,8 @@ uint8_t reset_bit(uint8_t byte, int bit) {
     return byte & ~(1 << bit);
 }
 
-uint8_t*** Display::getScreenData() {
-    return (uint8_t***)screenData;
+uint8_t* Display::getScreenData() {
+    return (uint8_t*)screenData;
 }
 
 void Display::UpdateGraphics(int cycles) {
@@ -288,7 +288,7 @@ void Display::renderSprites() {
             }
 
             line *= 2;
-            uint16_t data_address = (0x8000 + (tileLocation *16)) + line;
+            uint16_t data_address = (0x8000 + (tileLocation * 16)) + line;
             uint8_t data1 = memory->read_byte(data_address);
             uint8_t data2 = memory->read_byte(data_address + 1);
 

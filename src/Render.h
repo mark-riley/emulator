@@ -21,7 +21,7 @@ public:
     void renderScreen();
 
 private:
-    Display * display;
+    Display* display;
     GLuint VAO;
     GLuint shaderProgram;
     GLuint lcd_texture;

@@ -8,7 +8,7 @@
 
 class Timer {
 public:
-    explicit Timer(Interrupt *);
+    explicit Timer(Interrupt*);
     void doTimers(int);
     uint8_t getDIV();
     uint8_t getTIMA();
@@ -27,7 +27,7 @@ private:
     uint8_t getClockFreq();
     uint16_t getClockMask();
 
-    Interrupt * interrupt;
+    Interrupt* interrupt;
 
     uint8_t TIMA;
     uint8_t TMA;

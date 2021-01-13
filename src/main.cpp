@@ -1,6 +1,7 @@
 #include "cpu/LR35902.h"
 #include "Display.h"
 #include "Cartridge.h"
+#include "Gameboy.h"
 #include "Render.h"
 #include "Timer.h"
 #include "Interrupt.h"
@@ -225,10 +226,10 @@ int main (int argv, char** args) {
     SDL_Event e;
 
     // Loading the boot rom
-    const char * filePath = BOOT_ROM;
+    const char* filePath = BOOT_ROM;
     std::vector<uint8_t> fileBuf = readFileToBuffer(filePath);
 
-    const char * rompath = GAME_ROM;
+    const char* rompath = GAME_ROM;
     std::vector<uint8_t> romBuf = readFileToBuffer(rompath);
 
     auto cartridge = new Cartridge(romBuf);
@@ -237,18 +238,20 @@ int main (int argv, char** args) {
     SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "ROM Size: %d\n", cartridge->getRomBanks());
     SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "RAM Size: %d\n", cartridge->getRamBanks());
 
-    auto * interrupt = new Interrupt();
+    auto* gameboy = new Gameboy(cartridge);
 
-    auto * timer = new Timer(interrupt);
+    auto* interrupt = new Interrupt();
 
-    auto *memory_bus = new MemoryBus(cartridge, timer, interrupt);
+    auto* timer = new Timer(interrupt);
+
+    auto* memory_bus = new MemoryBus(cartridge, timer, interrupt);
     memory_bus->load_boot_rom(fileBuf);
 
-    auto *cpu = new LR35902(memory_bus, interrupt, false);
+    auto* cpu = new LR35902(memory_bus, interrupt, false);
 
-    auto *lcd = new Display(memory_bus, interrupt);
+    auto* lcd = new Display(memory_bus, interrupt);
 
-    auto *render = new Render(lcd);
+    auto* render = new Render(lcd);
     render->init(cartridge->getTitle());
 
 //    4194304  // clock cycles per second (2^22)

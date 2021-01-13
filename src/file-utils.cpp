@@ -2,7 +2,7 @@
 #include <fstream>
 #include <iterator>
 
-std::vector<uint8_t> readFileToBuffer(const std::string &filePath) {
+std::vector<uint8_t> readFileToBuffer(const std::string& filePath) {
     std::ifstream file(filePath, std::ios::binary);
     file.unsetf(std::ios::skipws);
 

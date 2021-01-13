@@ -3,7 +3,7 @@
 #include <SDL_log.h>
 #include "MemoryBus.h"
 
-MemoryBus::MemoryBus(Cartridge * cart, Timer * system_timer, Interrupt * i) {
+MemoryBus::MemoryBus(Cartridge* cart, Timer* system_timer, Interrupt* i) {
     // If there is no cartridge, then the cartridge reads as 0xFF
     cartridge = cart;
     timer = system_timer;

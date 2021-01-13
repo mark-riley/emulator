@@ -37,7 +37,7 @@ class Display {
 public:
     explicit Display(MemoryBus*, Interrupt*);
     void UpdateGraphics(int);
-    uint8_t*** getScreenData();
+    uint8_t* getScreenData();
 
     enum {
         WHITE,
@@ -54,8 +54,8 @@ private:
         TRANSFER
     };
 
-    MemoryBus * memory;
-    Interrupt * interrupt;
+    MemoryBus* memory;
+    Interrupt* interrupt;
 
     uint8_t screenData[SCREEN_HEIGHT][SCREEN_WIDTH][3];
 

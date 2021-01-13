@@ -1,7 +1,7 @@
 #include <SDL_log.h>
 #include "LR35902.h"
 
-LR35902::LR35902(MemoryBus * memory_bus, Interrupt * i, bool skip_bios) {
+LR35902::LR35902(MemoryBus* memory_bus, Interrupt* i, bool skip_bios) {
 //    memory_bus->write_byte(0xFF00, 0xCF);
 //    memory_bus->write_byte(0xFF05, 0x0);
 //    memory_bus->write_byte(0xFF06, 0x0);
