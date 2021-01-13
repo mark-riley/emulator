@@ -1,11 +1,5 @@
-#include "cpu/LR35902.h"
-#include "Display.h"
-#include "Cartridge.h"
-#include "Gameboy.h"
-#include "Render.h"
-#include "Timer.h"
-#include "Interrupt.h"
 #include "file-utils.h"
+#include "Gameboy.h"
 
 #define BOOT_ROM "bios/dmg_boot.bin"
 
@@ -229,12 +223,7 @@ int main (int argv, char** args) {
     const char* rompath = GAME_ROM;
     std::vector<uint8_t> romBuf = readFileToBuffer(rompath);
 
-    auto cartridge = new Cartridge(romBuf);
-    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Cartridge Title: %s\n", cartridge->getTitle().c_str());
-    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Cartridge Type: %X\n", cartridge->getCartridgeType());
-    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "ROM Size: %d\n", cartridge->getRomBanks());
-    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "RAM Size: %d\n", cartridge->getRamBanks());
-
+    auto* cartridge = new Cartridge(romBuf);
     auto* gameboy = new Gameboy(cartridge, fileBuf);
 
     gameboy->powerOn();

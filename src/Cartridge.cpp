@@ -7,6 +7,11 @@ Cartridge::Cartridge(std::vector<uint8_t>& game_rom_buffer) {
     romBank = 1;
     ramBank = 0;
     ramEnable = false;
+
+    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Cartridge Title: %s\n", getTitle().c_str());
+    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Cartridge Type: %X\n", getCartridgeType());
+    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "ROM Size: %d\n", getRomBanks());
+    SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "RAM Size: %d\n", getRamBanks());
 }
 
 std::string Cartridge::getTitle() {
