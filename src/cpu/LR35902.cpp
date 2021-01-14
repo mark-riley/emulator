@@ -2,42 +2,42 @@
 #include "LR35902.h"
 
 LR35902::LR35902(MemoryBus* memory_bus, Interrupt* i, bool skip_bios) {
-//    memory_bus->write_byte(0xFF00, 0xCF);
-//    memory_bus->write_byte(0xFF05, 0x0);
-//    memory_bus->write_byte(0xFF06, 0x0);
-//    memory_bus->write_byte(0xFF07, 0x0);
-//    memory_bus->write_byte(0xFF10, 0x80);
-//    memory_bus->write_byte(0xFF11, 0xBF);
-//    memory_bus->write_byte(0xFF12, 0xF3);
-//    memory_bus->write_byte(0xFF14, 0xBF);
-//    memory_bus->write_byte(0xFF16, 0x3F);
-//    memory_bus->write_byte(0xFF17, 0x00);
-//    memory_bus->write_byte(0xFF19, 0xBF);
-//    memory_bus->write_byte(0xFF1A, 0x7F);
-//    memory_bus->write_byte(0xFF1B, 0xFF);
-//    memory_bus->write_byte(0xFF1C, 0x9F);
-//    memory_bus->write_byte(0xFF1E, 0xBF);
-//    memory_bus->write_byte(0xFF20, 0xFF);
-//    memory_bus->write_byte(0xFF21, 0x00);
-//    memory_bus->write_byte(0xFF22, 0x00);
-//    memory_bus->write_byte(0xFF23, 0xBF);
-//    memory_bus->write_byte(0xFF24, 0x77);
-//    memory_bus->write_byte(0xFF25, 0xF3);
-//    memory_bus->write_byte(0xFF26, 0xF1);
+//    mmu->write_byte(0xFF00, 0xCF);
+//    mmu->write_byte(0xFF05, 0x0);
+//    mmu->write_byte(0xFF06, 0x0);
+//    mmu->write_byte(0xFF07, 0x0);
+//    mmu->write_byte(0xFF10, 0x80);
+//    mmu->write_byte(0xFF11, 0xBF);
+//    mmu->write_byte(0xFF12, 0xF3);
+//    mmu->write_byte(0xFF14, 0xBF);
+//    mmu->write_byte(0xFF16, 0x3F);
+//    mmu->write_byte(0xFF17, 0x00);
+//    mmu->write_byte(0xFF19, 0xBF);
+//    mmu->write_byte(0xFF1A, 0x7F);
+//    mmu->write_byte(0xFF1B, 0xFF);
+//    mmu->write_byte(0xFF1C, 0x9F);
+//    mmu->write_byte(0xFF1E, 0xBF);
+//    mmu->write_byte(0xFF20, 0xFF);
+//    mmu->write_byte(0xFF21, 0x00);
+//    mmu->write_byte(0xFF22, 0x00);
+//    mmu->write_byte(0xFF23, 0xBF);
+//    mmu->write_byte(0xFF24, 0x77);
+//    mmu->write_byte(0xFF25, 0xF3);
+//    mmu->write_byte(0xFF26, 0xF1);
 
-//    memory_bus->write_byte(0xFF40, 0x91);
-//    memory_bus->write_byte(0xFF42, 0x00);
+//    mmu->write_byte(0xFF40, 0x91);
+//    mmu->write_byte(0xFF42, 0x00);
     memory_bus->write_byte(0xFF43, 0x00);
-//    memory_bus->write_byte(0xFF44, 0x00);
-//    memory_bus->write_byte(0xFF45, 0x00);
-//    memory_bus->write_byte(0xFF47, 0xFC);
-//    memory_bus->write_byte(0xFF48, 0xFF);
-//    memory_bus->write_byte(0xFF49, 0xFF);
-//    memory_bus->write_byte(0xFF4A, 0x00);
-//    memory_bus->write_byte(0xFF4B, 0x00);
+//    mmu->write_byte(0xFF44, 0x00);
+//    mmu->write_byte(0xFF45, 0x00);
+//    mmu->write_byte(0xFF47, 0xFC);
+//    mmu->write_byte(0xFF48, 0xFF);
+//    mmu->write_byte(0xFF49, 0xFF);
+//    mmu->write_byte(0xFF4A, 0x00);
+//    mmu->write_byte(0xFF4B, 0x00);
 
-//    memory_bus->write_byte(0xFF0F, 0x00);
-//    memory_bus->write_byte(0xFFFF, 0x00);
+//    mmu->write_byte(0xFF0F, 0x00);
+//    mmu->write_byte(0xFFFF, 0x00);
 
     if (skip_bios) {
         PC = 0x0100;

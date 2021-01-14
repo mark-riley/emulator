@@ -4,11 +4,11 @@ Gameboy::Gameboy(Cartridge* c, std::vector<uint8_t> fileBuf) {
     cartridge = c;
     interrupt = new Interrupt();
     timer = new Timer(interrupt);
-    memory_bus = new MemoryBus(cartridge, timer, interrupt);
-    memory_bus->load_boot_rom(fileBuf);
-    cpu = new LR35902(memory_bus, interrupt, false);
-    lcd = new Display(memory_bus, interrupt);
-    render = new Render(lcd);
+    mmu = new MemoryBus(cartridge, timer, interrupt);
+    mmu->load_boot_rom(fileBuf);
+    cpu = new LR35902(mmu, interrupt, false);
+    ppu = new Display(mmu, interrupt);
+    render = new Render(ppu);
 }
 
 void Gameboy::powerOn() {
@@ -28,7 +28,7 @@ void Gameboy::powerOn() {
             int cycles = cpu->check_interrupts();
             cycles += cpu->execute_cycle();
             cyclesThisUpdate += cycles;
-            lcd->UpdateGraphics(cycles);
+            ppu->UpdateGraphics(cycles);
             timer->doTimers(cycles);
         }
 
@@ -89,7 +89,7 @@ void Gameboy::powerOn() {
                     default:
                         break;
                 }
-                memory_bus->write_byte(0xFF00, input);
+                mmu->write_byte(0xFF00, input);
             }
         }
     }

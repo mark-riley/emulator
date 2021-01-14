@@ -20,10 +20,11 @@ private:
     Cartridge* cartridge;
     Interrupt* interrupt;
     Timer* timer;
-    MemoryBus* memory_bus;
+    MemoryBus* mmu;
     LR35902* cpu;
-    Display* lcd;
+    Display* ppu;
     Render* render;
+    Audio* apu;
 };
 
 
