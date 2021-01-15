@@ -9,6 +9,8 @@ Gameboy::Gameboy(Cartridge* c, std::vector<uint8_t> fileBuf) {
     cpu = new LR35902(mmu, interrupt, false);
     ppu = new Display(mmu, interrupt);
     render = new Render(ppu);
+    apu = new Audio();
+    joypad = new Joypad();
 }
 
 void Gameboy::powerOn() {

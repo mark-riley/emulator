@@ -11,6 +11,8 @@
 #include "MemoryBus.h"
 #include "Display.h"
 #include "Render.h"
+#include "Joypad.h"
+#include "Audio.h"
 
 class Gameboy {
 public:
@@ -25,6 +27,7 @@ private:
     Display* ppu;
     Render* render;
     Audio* apu;
+    Joypad* joypad;
 };
 
 

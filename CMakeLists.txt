@@ -14,7 +14,7 @@ include_directories(${SDL2_INCLUDE_DIRS})
 set(INCLUDE_DIR "${SRC_DIR}")
 include_directories(${INCLUDE_DIR})
 
-set(SOURCES ${SRC_DIR}/main.cpp ${SRC_DIR}/cpu/LR35902.cpp ${SRC_DIR}/Display.cpp ${SRC_DIR}/MemoryBus.cpp ${SRC_DIR}/cpu/instructions/interpreter/cb_interpreter.cpp ${SRC_DIR}/cpu/instructions/interpreter/interpreter.cpp ${SRC_DIR}/Cartridge.cpp ${SRC_DIR}/Render.cpp ${SRC_DIR}/Timer.cpp ${SRC_DIR}/Interrupt.cpp src/file-utils.h src/file-utils.cpp src/Gameboy.cpp src/Gameboy.h src/Audio.cpp src/Audio.h)
+set(SOURCES ${SRC_DIR}/main.cpp ${SRC_DIR}/cpu/LR35902.cpp ${SRC_DIR}/Display.cpp ${SRC_DIR}/MemoryBus.cpp ${SRC_DIR}/cpu/instructions/interpreter/cb_interpreter.cpp ${SRC_DIR}/cpu/instructions/interpreter/interpreter.cpp ${SRC_DIR}/Cartridge.cpp ${SRC_DIR}/Render.cpp ${SRC_DIR}/Timer.cpp ${SRC_DIR}/Interrupt.cpp src/file-utils.h src/file-utils.cpp src/Gameboy.cpp src/Gameboy.h src/Audio.cpp src/Audio.h src/Joypad.cpp src/Joypad.h)
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Link SDL2 Libraries
